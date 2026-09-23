@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrated Science: SF Courier Analogy vs Electric Circuit</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Smooth range slider styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1e293b;
+      height: 8px;
+      border-radius: 4px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f59e0b;
+      cursor: pointer;
+      border: 3px solid #0f172a;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+      transition: transform 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .tab-btn.active {
+      background-color: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+  <!-- ERROR NOTIFICATION BANNER (Hidden by default, shown on any runtime issue) -->
+  <div id="errorBanner" class="hidden bg-rose-900/90 text-white px-4 py-2 text-xs font-mono text-center border-b border-rose-500"></div>
+
+  <!-- TOP APP HEADER -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-xl shadow-lg shadow-amber-500/20 font-black">
+          ⚡
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            SF Express Analogy vs Electric Circuit
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">HK S1–S3 Science</span>
+          </h1>
+          <p class="text-xs text-slate-400">
+            Current (電流) • Voltage (電壓) • Resistance (電阻) — No abstract symbols, full intuitive learning
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800 text-xs font-bold">
+        <button id="tabBtnSimulation" onclick="switchTab('simulation')" class="tab-btn active px-3.5 py-1.5 rounded-xl transition">
+          🔄 Side-by-Side Simulation
+        </button>
+        <button id="tabBtnConcepts" onclick="switchTab('concepts')" class="tab-btn text-slate-400 hover:text-white px-3.5 py-1.5 rounded-xl transition">
+          📊 3 Properties & Units
+        </button>
+        <button id="tabBtnMeters" onclick="switchTab('meters')" class="tab-btn text-slate-400 hover:text-white px-3.5 py-1.5 rounded-xl transition">
+          🍢 Meters (魚蛋串 & 夾公仔)
+        </button>
+        <button id="tabBtnQuiz" onclick="switchTab('quiz')" class="tab-btn text-slate-400 hover:text-white px-3.5 py-1.5 rounded-xl transition">
+          ❓ Concept Check
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 space-y-5">
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: SIDE-BY-SIDE SIMULATION -->
+    <!-- =================================================================== -->
+    <div id="tabSimulation" class="space-y-4">
+
+      <!-- Interactive Controls Deck -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+          <div class="text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Real-time Interactive Laboratory • Adjust sliders to observe both worlds instantly</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnPlayPause" onclick="togglePlayPause()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
+              <span id="playIcon">⏸</span> <span id="playText">Pause</span>
+            </button>
+            <button onclick="resetSliders()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition border border-slate-700">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          
+          <!-- Voltage Control (SF: Mail Parcels loaded at Warehouse) -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-amber-500/30 flex flex-col justify-between space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                ⚡ Voltage (電壓)
+              </span>
+              <span id="valVoltage" class="font-mono font-bold text-sm text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/40">
+                6.0 Volt (V)
+              </span>
+            </div>
+            <input id="sliderVoltage" type="range" min="1" max="12" step="0.5" value="6" oninput="onControlChange()" class="w-full">
+            <div class="text-[11px] text-slate-400 flex justify-between">
+              <span>SF: Mail per Courier (件數)</span>
+              <span class="text-amber-400/90 font-medium">Energy per charge</span>
+            </div>
+          </div>
+
+          <!-- Resistance Control (SF: Muddy Road Obstacles) -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-indigo-500/30 flex flex-col justify-between space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-indigo-400 flex items-center gap-1.5">
+                🛑 Resistance (電阻)
+              </span>
+              <span id="valResistance" class="font-mono font-bold text-sm text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded-lg border border-indigo-500/40">
+                3.0 Ohm (Ω)
+              </span>
+            </div>
+            <input id="sliderResistance" type="range" min="1" max="10" step="0.5" value="3" oninput="onControlChange()" class="w-full">
+            <div class="text-[11px] text-slate-400 flex justify-between">
+              <span>SF: Road Mud & Obstacles (難行路段)</span>
+              <span class="text-indigo-400/90 font-medium">Opposition to flow</span>
+            </div>
+          </div>
+
+          <!-- Resulting Current Readout (SF: Courier Traffic Flow) -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-emerald-500/30 flex flex-col justify-between space-y-2 md:col-span-2 lg:col-span-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                🌊 Resulting Current (電流)
+              </span>
+              <span id="valCurrent" class="font-mono font-bold text-sm text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded-lg border border-emerald-500/40">
+                2.00 Ampere (A)
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-300 leading-snug">
+              <span class="text-emerald-400 font-bold">Rule:</span> Higher Voltage pushes MORE flow. Higher Resistance SLOWS flow.
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <label class="flex items-center gap-1.5 text-[11px] text-slate-300 cursor-pointer">
+                <input id="chkFishball" type="checkbox" checked onchange="toggleMeters()" class="rounded bg-slate-800 text-cyan-500 focus:ring-0">
+                <span>Show Ammeter (魚蛋串)</span>
+              </label>
+              <label class="flex items-center gap-1.5 text-[11px] text-slate-300 cursor-pointer ml-3">
+                <input id="chkClaw" type="checkbox" checked onchange="toggleMeters()" class="rounded bg-slate-800 text-amber-500 focus:ring-0">
+                <span>Show Voltmeter (夾公仔)</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SIDE-BY-SIDE CANVASES CONTAINER -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <!-- ============================================== -->
+        <!-- LEFT: SF DELIVERY COURIER ANALOGY -->
+        <!-- ============================================== -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 flex flex-col shadow-xl">
+          
+          <!-- Outer Header & Clean Legend Bar (No overlap on canvas) -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+              <h2 class="text-sm font-black text-white tracking-wide uppercase">
+                SF Delivery Analogy (順豐速遞世界)
+              </h2>
+            </div>
+            <span class="text-[11px] font-mono font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-800/40">
+              Analogy Model
+            </span>
+          </div>
+
+          <!-- Clean External Legend Chips -->
+          <div class="flex flex-wrap gap-2 py-2 text-[11px] text-slate-300">
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🏢 <strong>Warehouse</strong> = Cell
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🏃 <strong>Courier</strong> = Electric Charge
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              📦 <strong>Mail/Parcel</strong> = Voltage (Energy)
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🚧 <strong>Mud/Rocks</strong> = Resistance
+            </span>
+          </div>
+
+          <!-- Canvas Frame -->
+          <div id="canvasWrapSF" class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 mt-1">
+            <canvas id="canvasSF" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300">
+            <strong class="text-rose-400">Analogy Insight:</strong> Couriers are <em>never eaten or lost</em>! They simply pick up mail at the warehouse, struggle through the mud road, deliver parcels to the house, and return empty-handed to repeat the loop.
+          </div>
+
+        </div>
+
+        <!-- ============================================== -->
+        <!-- RIGHT: REAL DC ELECTRIC CIRCUIT -->
+        <!-- ============================================== -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 flex flex-col shadow-xl">
+          
+          <!-- Outer Header & Clean Legend Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-cyan-400"></span>
+              <h2 class="text-sm font-black text-white tracking-wide uppercase">
+                Real Electric Circuit (真實電路世界)
+              </h2>
+            </div>
+            <span class="text-[11px] font-mono font-bold text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/40">
+              Conventional Current (+ to −)
+            </span>
+          </div>
+
+          <!-- Clean External Legend Chips -->
+          <div class="flex flex-wrap gap-2 py-2 text-[11px] text-slate-300">
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🔋 <strong>Cell (+ / −)</strong> = Voltage source
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🔵 <strong>Charge (+q)</strong> = Recycled carrier
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              ✨ <strong>Yellow Halo</strong> = Electrical Energy
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              💡 <strong>Bulb</strong> = Light energy release
+            </span>
+          </div>
+
+          <!-- Canvas Frame -->
+          <div id="canvasWrapCircuit" class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 mt-1">
+            <canvas id="canvasCircuit" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300">
+            <strong class="text-cyan-400">Physical Truth:</strong> Electric charges are <em>never consumed</em>! They flow out from the positive (+) terminal with high energy, give up energy as light/heat at the bulb, and return to the negative (−) terminal.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: THREE PROPERTIES & SI UNITS COMPARISON -->
+    <!-- =================================================================== -->
+    <div id="tabConcepts" class="tab-pane hidden space-y-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl">
+        <h2 class="text-lg font-black text-white">Three Fundamental Properties of Electricity</h2>
+        <p class="text-xs text-slate-400 mt-1">
+          In junior science, we master these three quantities using physical descriptions and laboratory units.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+          
+          <!-- CURRENT CARD -->
+          <div class="bg-slate-950 border-2 border-emerald-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">🌊</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">
+                  Unit: Ampere (A)
+                </span>
+              </div>
+              <h3 class="text-base font-black text-white mt-2">Current (電流)</h3>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                The <strong>rate of flow of electric charges</strong> passing a point in the circuit per second.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-3 border-t border-slate-800 text-xs">
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> How many couriers run past a spot per minute (traffic flow).
+              </div>
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-cyan-400 font-bold">Meter Used:</span> <strong>Ammeter (安培計)</strong> connected in <em>series</em>.
+              </div>
+            </div>
+          </div>
+
+          <!-- VOLTAGE CARD -->
+          <div class="bg-slate-950 border-2 border-amber-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">⚡</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
+                  Unit: Volt (V)
+                </span>
+              </div>
+              <h3 class="text-base font-black text-white mt-2">Voltage (電壓)</h3>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                The <strong>electrical energy supplied by the cell</strong> to each unit of electric charge.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-3 border-t border-slate-800 text-xs">
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> How many mail packages are loaded onto each courier's backpack.
+              </div>
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-cyan-400 font-bold">Meter Used:</span> <strong>Voltmeter (伏特計)</strong> connected in <em>parallel</em>.
+              </div>
+            </div>
+          </div>
+
+          <!-- RESISTANCE CARD -->
+          <div class="bg-slate-950 border-2 border-indigo-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">🛑</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">
+                  Unit: Ohm (Ω)
+                </span>
+              </div>
+              <h3 class="text-base font-black text-white mt-2">Resistance (電阻)</h3>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                The <strong>opposition</strong> to the flow of electric charges through a material or component.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-3 border-t border-slate-800 text-xs">
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> How rough, muddy, or clogged the delivery road is.
+              </div>
+              <div class="p-2 bg-slate-900 rounded-xl">
+                <span class="text-indigo-400 font-bold">Effect:</span> Higher resistance reduces the flow of charges (lowers Current).
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Relationship Summary Box -->
+        <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 border border-slate-800 space-y-2 text-xs">
+          <h4 class="font-bold text-amber-300 uppercase tracking-wider text-[11px]">How They Change Together:</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+            <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
+              <strong>1. More Voltage (More Cells)</strong> ➔ Electric charges carry more energy, pushing a larger <strong>Current</strong> through the circuit.
+            </div>
+            <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800">
+              <strong>2. More Resistance (Longer / Thinner Wire)</strong> ➔ Opposes charge motion more strongly, causing the <strong>Current</strong> to drop.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: METERS & LAB METAPHORS -->
+    <!-- =================================================================== -->
+    <div id="tabMeters" class="tab-pane hidden space-y-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-5">
+        
+        <div>
+          <h2 class="text-lg font-black text-white">How to Measure: Authentic Hong Kong Lab Metaphors</h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Understanding why an Ammeter must be connected in Series, while a Voltmeter must be connected in Parallel.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <!-- AMMETER (FISHBALL METAPHOR) -->
+          <div class="bg-slate-950 border-2 border-cyan-500/40 rounded-3xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-3xl">🍢</span>
+                  <div>
+                    <h3 class="text-base font-black text-cyan-300">Ammeter (安培計)</h3>
+                    <p class="text-[11px] text-slate-400">Measures <strong>Current (電流)</strong> in <strong>Ampere (A)</strong></p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  SERIES (串聯)
+                </span>
+              </div>
+
+              <!-- Schematic Diagram -->
+              <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                <svg viewBox="0 0 320 70" class="w-full max-w-xs h-16">
+                  <line x1="20" y1="35" x2="125" y2="35" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                  <line x1="195" y1="35" x2="300" y2="35" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                  <polygon points="75,30 85,35 75,40" fill="#38bdf8"/>
+                  <polygon points="245,30 255,35 245,40" fill="#38bdf8"/>
+                  <circle cx="160" cy="35" r="28" fill="#082f49" stroke="#38bdf8" stroke-width="3"/>
+                  <text x="160" y="42" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="900" font-family="Plus Jakarta Sans">A</text>
+                </svg>
+              </div>
+
+              <div class="text-xs space-y-2 text-slate-300">
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong class="text-cyan-300">🍢 The Curry Fishball Metaphor (咖哩魚蛋串):</strong>
+                  <p class="mt-0.5 text-slate-400">
+                    To skewer fishballs onto a bamboo stick, the fishballs must be threaded in one single continuous line.
+                  </p>
+                </div>
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong class="text-white">Why break the wire?</strong>
+                  <p class="mt-0.5 text-slate-400">
+                    Current is the flow rate of charges. To count every single charge, you <strong>must break the circuit</strong> and string the Ammeter directly inline so 100% of charges pass through it.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-cyan-300 font-mono bg-cyan-950/60 p-2 rounded-xl border border-cyan-800/40 text-center">
+              Symbol in Diagram: ───( A )─── (One unbroken loop)
+            </div>
+          </div>
+
+          <!-- VOLTMETER (CLAW MACHINE METAPHOR) -->
+          <div class="bg-slate-950 border-2 border-amber-500/40 rounded-3xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-3xl">🕹️</span>
+                  <div>
+                    <h3 class="text-base font-black text-amber-300">Voltmeter (伏特計)</h3>
+                    <p class="text-[11px] text-slate-400">Measures <strong>Voltage (電壓)</strong> in <strong>Volt (V)</strong></p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  PARALLEL (並聯)
+                </span>
+              </div>
+
+              <!-- Schematic Diagram -->
+              <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                <svg viewBox="0 0 320 90" class="w-full max-w-xs h-20">
+                  <!-- Main Wire & Bulb -->
+                  <line x1="20" y1="30" x2="135" y2="30" stroke="#38bdf8" stroke-width="3"/>
+                  <circle cx="160" cy="30" r="16" fill="#1e293b" stroke="#facc15" stroke-width="2"/>
+                  <line x1="149" y1="19" x2="171" y2="41" stroke="#facc15" stroke-width="2"/>
+                  <line x1="149" y1="41" x2="171" y2="19" stroke="#facc15" stroke-width="2"/>
+                  <line x1="185" y1="30" x2="300" y2="30" stroke="#38bdf8" stroke-width="3"/>
+
+                  <!-- Two Conjunction Points -->
+                  <circle cx="95" cy="30" r="4.5" fill="#facc15"/>
+                  <circle cx="225" cy="30" r="4.5" fill="#facc15"/>
+
+                  <!-- Parallel Leads -->
+                  <path d="M 95 30 L 95 65 L 135 65" fill="none" stroke="#facc15" stroke-width="2" stroke-dasharray="3 3"/>
+                  <path d="M 225 30 L 225 65 L 185 65" fill="none" stroke="#facc15" stroke-width="2" stroke-dasharray="3 3"/>
+
+                  <!-- Voltmeter Circle -->
+                  <circle cx="160" cy="65" r="18" fill="#451a03" stroke="#facc15" stroke-width="2.5"/>
+                  <text x="160" y="71" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="900" font-family="Plus Jakarta Sans">V</text>
+                </svg>
+              </div>
+
+              <div class="text-xs space-y-2 text-slate-300">
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong class="text-amber-300">🕹️ The Claw Machine Metaphor (夾公仔機):</strong>
+                  <p class="mt-0.5 text-slate-400">
+                    Two claws reach down from outside and grip two distinct points across the toy.
+                  </p>
+                </div>
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong class="text-white">Why DO NOT break the wire?</strong>
+                  <p class="mt-0.5 text-slate-400">
+                    Voltage is the <strong>energy difference</strong> between before and after the appliance. You keep the circuit intact and clamp <strong>two conjunction leads</strong> across it.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-amber-300 font-mono bg-amber-950/60 p-2 rounded-xl border border-amber-800/40 text-center">
+              Symbol in Diagram: ●───( V )───● (Two junction nodes)
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: CONCEPT CHECK QUIZ -->
+    <!-- =================================================================== -->
+    <div id="tabQuiz" class="tab-pane hidden space-y-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 max-w-2xl mx-auto">
+        <div>
+          <h2 class="text-lg font-black text-white">Quick Junior Science Concept Check</h2>
+          <p class="text-xs text-slate-400 mt-1">Test your understanding of couriers, electric charges, and meter connections.</p>
+        </div>
+
+        <div id="quizContainer" class="space-y-4 text-xs">
+          <!-- Populated by JS -->
+        </div>
+
+        <div id="quizScoreBox" class="hidden p-4 rounded-2xl bg-emerald-950/70 border border-emerald-500/40 text-center">
+          <p class="text-sm font-bold text-emerald-300">🎉 Excellent Work!</p>
+          <p class="text-xs text-slate-300 mt-1" id="quizScoreText"></p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC (ROBUST, CRASH-PROOF) -->
+  <script>
+    const State = {
+      voltage: 6.0,       // Volt (V)
+      resistance: 3.0,    // Ohm (Ω)
+      isRunning: true,
+      time: 0,
+      showAmmeter: true,
+      showVoltmeter: true,
+      courierCount: 7
+    };
+
+    // DOM Element References
+    let canvasSF, ctxSF;
+    let canvasCircuit, ctxCircuit;
+    let animId = null;
+
+    function reportError(msg) {
+      console.error("[ScienceApplet]", msg);
+      const b = document.getElementById('errorBanner');
+      if (b) {
+        b.textContent = `Notice: ${msg}`;
+        b.classList.remove('hidden');
+      }
+    }
+
+    function switchTab(tabId) {
+      try {
+        const tabs = ['simulation', 'concepts', 'meters', 'quiz'];
+        tabs.forEach(t => {
+          const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+          const el = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+          if (btn) {
+            btn.classList.toggle('active', t === tabId);
+            btn.classList.toggle('text-slate-400', t !== tabId);
+          }
+          if (el) {
+            el.classList.toggle('hidden', t !== tabId);
+          }
+        });
+
+        // Trigger immediate canvas redraw when switching to simulation
+        if (tabId === 'simulation') {
+          resizeCanvases();
+        }
+      } catch (err) {
+        reportError("Tab error: " + err.message);
+      }
+    }
+
+    function onControlChange() {
+      try {
+        const vSlider = document.getElementById('sliderVoltage');
+        const rSlider = document.getElementById('sliderResistance');
+
+        if (vSlider) State.voltage = parseFloat(vSlider.value) || 1.0;
+        if (rSlider) State.resistance = parseFloat(rSlider.value) || 1.0;
+
+        // Guaranteed non-zero resistance
+        if (State.resistance <= 0.1) State.resistance = 0.1;
+
+        // Current calculation (Current = Voltage / Resistance)
+        const current = State.voltage / State.resistance;
+
+        // Update Text Readouts
+        const vText = document.getElementById('valVoltage');
+        const rText = document.getElementById('valResistance');
+        const iText = document.getElementById('valCurrent');
+
+        if (vText) vText.textContent = `${State.voltage.toFixed(1)} Volt (V)`;
+        if (rText) rText.textContent = `${State.resistance.toFixed(1)} Ohm (Ω)`;
+        if (iText) iText.textContent = `${current.toFixed(2)} Ampere (A)`;
+      } catch (e) {
+        reportError("Control update error: " + e.message);
+      }
+    }
+
+    function togglePlayPause() {
+      State.isRunning = !State.isRunning;
+      const icon = document.getElementById('playIcon');
+      const txt = document.getElementById('playText');
+      if (icon) icon.textContent = State.isRunning ? '⏸' : '▶';
+      if (txt) txt.textContent = State.isRunning ? 'Pause' : 'Resume';
+    }
+
+    function resetSliders() {
+      const vSlider = document.getElementById('sliderVoltage');
+      const rSlider = document.getElementById('sliderResistance');
+      if (vSlider) vSlider.value = "6";
+      if (rSlider) rSlider.value = "3";
+      onControlChange();
+    }
+
+    function toggleMeters() {
+      const chkF = document.getElementById('chkFishball');
+      const chkC = document.getElementById('chkClaw');
+      State.showAmmeter = chkF ? chkF.checked : true;
+      State.showVoltmeter = chkC ? chkC.checked : true;
+    }
+
+    function resizeCanvases() {
+      try {
+        const setup = (wrapId, canvas) => {
+          const wrap = document.getElementById(wrapId);
+          if (!wrap || !canvas) return;
+          const rect = wrap.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
+          const w = Math.max(280, Math.floor(rect.width));
+          const h = Math.max(200, Math.floor(rect.height));
+
+          if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+          }
+        };
+
+        setup('canvasWrapSF', canvasSF);
+        setup('canvasWrapCircuit', canvasCircuit);
+      } catch (err) {
+        reportError("Resize error: " + err.message);
+      }
+    }
+
+    // Normalized geometry for smooth rectangular circuit loop with rounded corners
+    function getTrackMetrics(w, h) {
+      const padX = Math.max(65, Math.min(100, w * 0.18));
+      const padY = Math.max(50, Math.min(75, h * 0.18));
+      const trackW = Math.max(120, w - padX * 2);
+      const trackH = Math.max(100, h - padY * 2);
+      const cornerR = Math.min(28, trackW * 0.15, trackH * 0.15);
+
+      const topLen = trackW - 2 * cornerR;
+      const rightLen = trackH - 2 * cornerR;
+      const botLen = trackW - 2 * cornerR;
+      const leftLen = trackH - 2 * cornerR;
+      const arcLen = (Math.PI * 0.5) * cornerR;
+
+      const totalLen = topLen + rightLen + botLen + leftLen + (4 * arcLen);
+
+      return { padX, padY, trackW, trackH, cornerR, topLen, rightLen, botLen, leftLen, arcLen, totalLen };
+    }
+
+    // Maps progress t (0 to 1) clockwise around the rectangular circuit
+    function getLoopPoint(t, w, h) {
+      const m = getTrackMetrics(w, h);
+      let dist = (t % 1) * m.totalLen;
+      if (dist < 0) dist += m.totalLen;
+
+      // 1. Top Edge (Left -> Right)
+      if (dist < m.topLen) {
+        return { x: m.padX + m.cornerR + dist, y: m.padY, seg: 'top' };
+      }
+      dist -= m.topLen;
+
+      // Top-Right Corner Arc
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5) - (Math.PI * 0.5);
+        return {
+          x: m.padX + m.trackW - m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'tr'
+        };
+      }
+      dist -= m.arcLen;
+
+      // 2. Right Edge (Top -> Bottom)
+      if (dist < m.rightLen) {
+        return { x: m.padX + m.trackW, y: m.padY + m.cornerR + dist, seg: 'right' };
+      }
+      dist -= m.rightLen;
+
+      // Bottom-Right Corner Arc
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5);
+        return {
+          x: m.padX + m.trackW - m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.trackH - m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'br'
+        };
+      }
+      dist -= m.arcLen;
+
+      // 3. Bottom Edge (Right -> Left)
+      if (dist < m.botLen) {
+        return { x: m.padX + m.trackW - m.cornerR - dist, y: m.padY + m.trackH, seg: 'bot' };
+      }
+      dist -= m.botLen;
+
+      // Bottom-Left Corner Arc
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5) + (Math.PI * 0.5);
+        return {
+          x: m.padX + m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.trackH - m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'bl'
+        };
+      }
+      dist -= m.arcLen;
+
+      // 4. Left Edge (Bottom -> Top)
+      return { x: m.padX, y: m.padY + m.trackH - m.cornerR - dist, seg: 'left' };
+    }
+
+    function drawPill(ctx, text, x, y, bgColor, textColor, borderColor) {
+      ctx.save();
+      ctx.font = 'bold 10.5px Plus Jakarta Sans, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const tw = ctx.measureText(text).width;
+      const pw = tw + 14;
+      const ph = 20;
+
+      ctx.fillStyle = bgColor;
+      ctx.beginPath();
+      ctx.roundRect(x - pw / 2, y - ph / 2, pw, ph, 6);
+      ctx.fill();
+
+      if (borderColor) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = textColor;
+      ctx.fillText(text, x, y);
+      ctx.restore();
+    }
+
+    function renderSF(ctx, w, h, current) {
+      ctx.clearRect(0, 0, w, h);
+      const m = getTrackMetrics(w, h);
+
+      // 1. Draw Road Surface
+      ctx.save();
+      ctx.lineWidth = 26;
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.roundRect(m.padX, m.padY, m.trackW, m.trackH, m.cornerR);
+      ctx.stroke();
+
+      // Road center dashed line
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#475569';
+      ctx.setLineDash([8, 8]);
+      ctx.stroke();
+      ctx.restore();
+
+      // Coordinates for stations
+      const hubX = m.padX;
+      const hubY = m.padY + m.trackH * 0.5;
+
+      const mudX1 = m.padX + m.trackW * 0.25;
+      const mudX2 = m.padX + m.trackW * 0.75;
+      const mudY = m.padY;
+
+      const houseX = m.padX + m.trackW;
+      const houseY = m.padY + m.trackH * 0.5;
+
+      // 2. Muddy Obstacle Road (Resistance)
+      ctx.save();
+      ctx.fillStyle = 'rgba(120, 53, 15, 0.4)';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(mudX1, mudY - 14, mudX2 - mudX1, 28, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Mud / Boulder graphics
+      const bumps = 6;
+      const bStep = (mudX2 - mudX1) / bumps;
+      for (let i = 1; i <= bumps; i++) {
+        ctx.fillStyle = '#b45309';
+        ctx.beginPath();
+        ctx.arc(mudX1 + i * bStep - bStep / 2, mudY + (i % 2 === 0 ? -4 : 4), 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      drawPill(ctx, `🚧 Mud Road (難行路段): Resistance ${State.resistance.toFixed(1)} Ω`, (mudX1 + mudX2) / 2, mudY - 26, '#451a03', '#fde68a', '#b45309');
+
+      // 3. SF Hub / Warehouse (Cell / Voltage source)
+      ctx.save();
+      ctx.fillStyle = '#1e1b4b';
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(hubX - 22, hubY - 24, 44, 48, 8);
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '20px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏢', hubX, hubY);
+      ctx.restore();
+
+      drawPill(ctx, `🏢 SF Hub: Loads ${Math.round(State.voltage)} Parcels (Voltage)`, hubX, hubY - 38, '#1e1b4b', '#fca5a5', '#ef4444');
+
+      // 4. Customer House (Appliance / Bulb)
+      ctx.save();
+      ctx.fillStyle = '#064e3b';
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(houseX - 22, houseY - 24, 44, 48, 8);
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '20px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏠', houseX, houseY);
+      ctx.restore();
+
+      drawPill(ctx, '🏠 Customer House (Mail Delivered)', houseX, houseY - 38, '#064e3b', '#6ee7b7', '#10b981');
+
+      // 5. Courier Traffic Count (Ammeter Metaphor)
+      const countX = m.padX + m.trackW * 0.5;
+      const countY = m.padY + m.trackH;
+      if (State.showAmmeter) {
+        ctx.save();
+        ctx.fillStyle = '#082f49';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(countX, countY, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.font = '16px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🍢', countX, countY);
+        ctx.restore();
+
+        drawPill(ctx, `🍢 Fishball Checkpoint: ${current.toFixed(2)} couriers/s`, countX, countY + 28, '#082f49', '#7dd3fc', '#0284c7');
+      }
+
+      // 6. SF Delivery Couriers (Electric Charges carrying parcels)
+      const parcelCount = Math.max(1, Math.min(6, Math.round(State.voltage / 2)));
+      for (let i = 0; i < State.courierCount; i++) {
+        const t = (State.time * 0.06 * current + (i / State.courierCount)) % 1;
+        const pt = getLoopPoint(t, w, h);
+
+        // Has parcels after warehouse until reaching customer house
+        const hasParcels = (pt.seg === 'left' && pt.y < hubY) || pt.seg === 'top' || pt.seg === 'tr' || (pt.seg === 'right' && pt.y < houseY);
+
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+
+        // Courier Circle
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Runner Icon
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🏃', 0, 0);
+
+        // Backpack of Parcels
+        if (hasParcels) {
+          ctx.fillStyle = '#f59e0b';
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 1;
+          for (let p = 0; p < parcelCount; p++) {
+            ctx.beginPath();
+            ctx.roundRect(7, -8 + p * 4.5, 6, 3.5, 1);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+
+        ctx.restore();
+      }
+    }
+
+    function renderCircuit(ctx, w, h, current) {
+      ctx.clearRect(0, 0, w, h);
+      const m = getTrackMetrics(w, h);
+
+      // Coordinates
+      const batX = m.padX;
+      const batY = m.padY + m.trackH * 0.5;
+
+      const rX1 = m.padX + m.trackW * 0.25;
+      const rX2 = m.padX + m.trackW * 0.75;
+      const rY = m.padY;
+
+      const bX = m.padX + m.trackW;
+      const bY = m.padY + m.trackH * 0.5;
+
+      const aX = m.padX + m.trackW * 0.5;
+      const aY = m.padY + m.trackH;
+      const aRadius = 18;
+
+      // 1. Orthogonal Conducting Wires
+      ctx.save();
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Top Branch: Cell (+) -> Top-Left Corner -> Resistor -> Top-Right Corner -> Bulb
+      ctx.beginPath();
+      ctx.moveTo(batX, batY - 20);
+      ctx.lineTo(batX, m.padY + m.cornerR);
+      ctx.arcTo(batX, m.padY, batX + m.cornerR, m.padY, m.cornerR);
+      ctx.lineTo(rX1, rY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(rX2, rY);
+      ctx.lineTo(m.padX + m.trackW - m.cornerR, m.padY);
+      ctx.arcTo(m.padX + m.trackW, m.padY, m.padX + m.trackW, m.padY + m.cornerR, m.cornerR);
+      ctx.lineTo(bX, bY - 20);
+      ctx.stroke();
+
+      // Bottom Branch: Bulb -> Bottom-Right Corner -> Ammeter (or straight) -> Bottom-Left Corner -> Cell (-)
+      ctx.beginPath();
+      ctx.moveTo(bX, bY + 20);
+      ctx.lineTo(m.padX + m.trackW, m.padY + m.trackH - m.cornerR);
+      ctx.arcTo(m.padX + m.trackW, m.padY + m.trackH, m.padX + m.trackW - m.cornerR, m.padY + m.trackH, m.cornerR);
+
+      if (State.showAmmeter) {
+        // Wire breaks at Ammeter Right Terminal
+        ctx.lineTo(aX + aRadius, aY);
+        ctx.stroke();
+
+        // Wire leaves from Ammeter Left Terminal to Cell Negative
+        ctx.beginPath();
+        ctx.moveTo(aX - aRadius, aY);
+        ctx.lineTo(m.padX + m.cornerR, m.padY + m.trackH);
+        ctx.arcTo(m.padX, m.padY + m.trackH, m.padX, m.padY + m.trackH - m.cornerR, m.cornerR);
+        ctx.lineTo(batX, batY + 20);
+        ctx.stroke();
+      } else {
+        ctx.lineTo(m.padX + m.cornerR, m.padY + m.trackH);
+        ctx.arcTo(m.padX, m.padY + m.trackH, m.padX, m.padY + m.trackH - m.cornerR, m.cornerR);
+        ctx.lineTo(batX, batY + 20);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 2. Cell Symbol (Positive long bar +, Negative short thick bar -)
+      ctx.save();
+      // Long Positive Plate (+)
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(batX - 18, batY - 10);
+      ctx.lineTo(batX + 18, batY - 10);
+      ctx.stroke();
+
+      // Short Thick Negative Plate (-)
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(batX - 10, batY + 10);
+      ctx.lineTo(batX + 10, batY + 10);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText('+', batX + 24, batY - 8);
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('−', batX + 24, batY + 14);
+      ctx.restore();
+
+      drawPill(ctx, `🔋 Cell: Voltage ${State.voltage.toFixed(1)} V`, batX, batY - 38, '#451a03', '#fef08a', '#b45309');
+
+      // 3. Resistor (Standard Circuit Rectangle Box with Zigzag)
+      ctx.save();
+      ctx.fillStyle = '#1e1b4b';
+      ctx.strokeStyle = '#818cf8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(rX1, rY - 12, rX2 - rX1, 24, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // Zigzag interior
+      ctx.strokeStyle = '#c7d2fe';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      const segs = 10;
+      const sW = (rX2 - rX1 - 16) / segs;
+      ctx.moveTo(rX1 + 8, rY);
+      for (let s = 1; s <= segs; s++) {
+        ctx.lineTo(rX1 + 8 + s * sW, rY + (s % 2 === 1 ? -5 : 5));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      drawPill(ctx, `🛑 Resistor: Resistance ${State.resistance.toFixed(1)} Ω`, (rX1 + rX2) / 2, rY - 26, '#1e1b4b', '#c7d2fe', '#6366f1');
+
+      // 4. Light Bulb (Circle with Cross ⊗)
+      const brightness = Math.min(1.0, (State.voltage * current) / 24);
+      ctx.save();
+
+      // Glow Halo
+      if (brightness > 0.05) {
+        const glowR = 14 + brightness * 35;
+        const grad = ctx.createRadialGradient(bX, bY, 4, bX, bY, glowR);
+        grad.addColorStop(0, `rgba(254, 240, 138, ${0.9 * brightness})`);
+        grad.addColorStop(0.5, `rgba(245, 158, 11, ${0.3 * brightness})`);
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(bX, bY, glowR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = '#0f172a';
+      ctx.strokeStyle = brightness > 0.1 ? '#facc15' : '#64748b';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(bX, bY, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cross ⊗
+      ctx.strokeStyle = brightness > 0.1 ? '#fef08a' : '#94a3b8';
+      ctx.lineWidth = 2;
+      const off = 11;
+      ctx.beginPath();
+      ctx.moveTo(bX - off, bY - off);
+      ctx.lineTo(bX + off, bY + off);
+      ctx.moveTo(bX - off, bY + off);
+      ctx.lineTo(bX + off, bY - off);
+      ctx.stroke();
+      ctx.restore();
+
+      drawPill(ctx, '💡 Light Bulb (用電器具 ⊗)', bX, bY - 38, '#451a03', '#fef08a', '#ca8a04');
+
+      // 5. AMMETER: Connected IN SERIES (🍢 魚蛋串)
+      if (State.showAmmeter) {
+        ctx.save();
+        ctx.fillStyle = '#082f49';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(aX, aY, aRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Terminal Dots
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(aX - aRadius, aY, 3.5, 0, Math.PI * 2);
+        ctx.arc(aX + aRadius, aY, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 15px Plus Jakarta Sans';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('A', aX, aY - 1);
+        ctx.restore();
+
+        drawPill(ctx, `🍢 Ammeter: ${current.toFixed(2)} A (Series 串聯)`, aX, aY + 28, '#082f49', '#7dd3fc', '#0284c7');
+      }
+
+      // 6. VOLTMETER: Connected IN PARALLEL (🕹️ 夾公仔)
+      if (State.showVoltmeter) {
+        ctx.save();
+        const vBranchX = bX + 45;
+        const cTopY = bY - 32;
+        const cBotY = bY + 32;
+        const vR = 18;
+
+        // Two Conjunction Dots on main wire
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(bX, cTopY, 4.5, 0, Math.PI * 2);
+        ctx.arc(bX, cBotY, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Branching Leads
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+
+        ctx.beginPath();
+        ctx.moveTo(bX, cTopY);
+        ctx.lineTo(vBranchX, cTopY);
+        ctx.lineTo(vBranchX, bY - vR);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(bX, cBotY);
+        ctx.lineTo(vBranchX, cBotY);
+        ctx.lineTo(vBranchX, bY + vR);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Voltmeter Circle (V)
+        ctx.fillStyle = '#451a03';
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(vBranchX, bY, vR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 15px Plus Jakarta Sans';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('V', vBranchX, bY - 1);
+
+        // Conjunction labels
+        ctx.font = 'bold 8.5px sans-serif';
+        ctx.fillStyle = '#fde047';
+        ctx.fillText('● Conjunction 1', bX - 44, cTopY);
+        ctx.fillText('● Conjunction 2', bX - 44, cBotY);
+        ctx.restore();
+
+        drawPill(ctx, `🕹️ Voltmeter: ${State.voltage.toFixed(1)} V (Parallel)`, vBranchX, bY + 32, '#451a03', '#fef08a', '#b45309');
+      }
+
+      // 7. Flowing Electric Charges (+q) (Conventional Current: + to -)
+      for (let i = 0; i < State.courierCount; i++) {
+        const t = (State.time * 0.06 * current + (i / State.courierCount)) % 1;
+        const pt = getLoopPoint(t, w, h);
+
+        // High potential energy before bulb
+        const hasEnergy = (pt.seg === 'left' && pt.y < batY) || pt.seg === 'top' || pt.seg === 'tr' || (pt.seg === 'right' && pt.y < bY);
+
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+
+        // Charge body
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Positive charge sign
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+', 0, 1);
+
+        // Yellow energy halo
+        if (hasEnergy) {
+          ctx.strokeStyle = '#facc15';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, 0, 12, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    let lastTime = 0;
+    function masterAnimate(now) {
+      animId = requestAnimationFrame(masterAnimate);
+
+      if (!lastTime) lastTime = now;
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      if (State.isRunning) {
+        State.time += dt;
+      }
+
+      try {
+        const current = State.voltage / State.resistance;
+
+        // Render SF Canvas
+        if (canvasSF && ctxSF) {
+          const dpr = window.devicePixelRatio || 1;
+          const w = canvasSF.width / dpr;
+          const h = canvasSF.height / dpr;
+          ctxSF.save();
+          ctxSF.scale(dpr, dpr);
+          renderSF(ctxSF, w, h, current);
+          ctxSF.restore();
+        }
+
+        // Render Circuit Canvas
+        if (canvasCircuit && ctxCircuit) {
+          const dpr = window.devicePixelRatio || 1;
+          const w = canvasCircuit.width / dpr;
+          const h = canvasCircuit.height / dpr;
+          ctxCircuit.save();
+          ctxCircuit.scale(dpr, dpr);
+          renderCircuit(ctxCircuit, w, h, current);
+          ctxCircuit.restore();
+        }
+      } catch (loopErr) {
+        reportError("Animation loop warning: " + loopErr.message);
+      }
+    }
+
+    const quizQuestions = [
+      {
+        q: "1. In the SF Express analogy, what do the couriers themselves represent?",
+        opts: ["Electrical Energy", "Electric Charges (+q)", "Light Bulbs", "Voltmeters"],
+        ans: 1,
+        exp: "Correct! Couriers are electric charges. They are never consumed; they merely pick up energy packages and loop around."
+      },
+      {
+        q: "2. Why must an Ammeter be connected in SERIES (🍢 魚蛋串)?",
+        opts: [
+          "To measure the voltage across two points",
+          "Because charges must pass straight through it to count the flow rate",
+          "To provide extra resistance to the circuit",
+          "So that the circuit wire doesn't have to be broken"
+        ],
+        ans: 1,
+        exp: "Correct! Just like threading curry fishballs onto one stick, the wire must break open so all charges pass through the meter."
+      },
+      {
+        q: "3. If you add more cells (increasing Voltage) while keeping the same resistor, what happens to the Current?",
+        opts: [
+          "Current decreases",
+          "Current remains exactly the same",
+          "Current increases because more energy pushes charges through",
+          "Resistance drops to zero"
+        ],
+        ans: 2,
+        exp: "Correct! Higher Voltage supplies more energy per charge, resulting in a higher Current (flow rate)."
+      }
+    ];
+
+    let userAnswers = {};
+
+    function initQuiz() {
+      const container = document.getElementById('quizContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      quizQuestions.forEach((item, qIdx) => {
+        const card = document.createElement('div');
+        card.className = 'p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'font-bold text-white text-xs';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'space-y-1.5';
+
+        item.opts.forEach((optText, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = `w-full text-left p-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs transition flex items-center justify-between`;
+          btn.id = `q_${qIdx}_opt_${oIdx}`;
+          btn.innerHTML = `<span>${optText}</span><span id="q_${qIdx}_icon_${oIdx}"></span>`;
+          btn.onclick = () => selectOption(qIdx, oIdx);
+          optsDiv.appendChild(btn);
+        });
+
+        const feedback = document.createElement('div');
+        feedback.id = `q_${qIdx}_fb`;
+        feedback.className = 'hidden p-2 rounded-xl text-[11px] font-medium';
+        card.appendChild(optsDiv);
+        card.appendChild(feedback);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, oIdx) {
+      userAnswers[qIdx] = oIdx;
+      const q = quizQuestions[qIdx];
+      const fb = document.getElementById(`q_${qIdx}_fb`);
+
+      // Update button colors
+      q.opts.forEach((_, idx) => {
+        const b = document.getElementById(`q_${qIdx}_opt_${idx}`);
+        const ic = document.getElementById(`q_${qIdx}_icon_${idx}`);
+        if (!b) return;
+
+        b.classList.remove('border-emerald-500', 'bg-emerald-950/40', 'border-rose-500', 'bg-rose-950/40');
+        if (idx === q.ans) {
+          b.classList.add('border-emerald-500', 'bg-emerald-950/30', 'text-emerald-300');
+          if (ic) ic.textContent = '✓';
+        } else if (idx === oIdx && oIdx !== q.ans) {
+          b.classList.add('border-rose-500', 'bg-rose-950/30', 'text-rose-300');
+          if (ic) ic.textContent = '✗';
+        }
+      });
+
+      if (fb) {
+        fb.classList.remove('hidden');
+        if (oIdx === q.ans) {
+          fb.className = 'p-2 rounded-xl text-[11px] font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-500/30';
+          fb.textContent = q.exp;
+        } else {
+          fb.className = 'p-2 rounded-xl text-[11px] font-medium bg-rose-950/60 text-rose-300 border border-rose-500/30';
+          fb.textContent = 'Not quite. Re-read the explanation above and review the simulation!';
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        canvasSF = document.getElementById('canvasSF');
+        canvasCircuit = document.getElementById('canvasCircuit');
+
+        if (canvasSF) ctxSF = canvasSF.getContext('2d');
+        if (canvasCircuit) ctxCircuit = canvasCircuit.getContext('2d');
+
+        // Initial sizing
+        resizeCanvases();
+        window.addEventListener('resize', resizeCanvases);
+
+        // Initialize quiz
+        initQuiz();
+
+        // Initialize values
+        onControlChange();
+
+        // Start animation loop safely
+        requestAnimationFrame(masterAnimate);
+      } catch (initErr) {
+        reportError("Startup initialization error: " + initErr.message);
+      }
+    });
+  </script>
+</body>
+</html>
