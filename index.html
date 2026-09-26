@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junior Secondary Science: SF Delivery Analogy vs Electric Circuit | 順豐速遞與電路比喻</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      user-select: none;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1e293b;
+      height: 8px;
+      border-radius: 4px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f59e0b;
+      cursor: pointer;
+      border: 3px solid #0f172a;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+      transition: transform 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .tab-btn.active {
+      background-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .lang-btn.active {
+      background-color: #f59e0b;
+      color: #0f172a;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+  <!-- Error Guard Banner -->
+  <div id="errorBanner" class="hidden bg-rose-900/90 text-white px-4 py-2 text-xs font-mono text-center border-b border-rose-500"></div>
+
+  <!-- TOP HEADER -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 px-4 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center text-xl shadow-lg shadow-amber-500/20 font-black">
+          ⚡
+        </div>
+        <div>
+          <h1 id="appTitle" class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            SF Delivery Analogy vs Electric Circuit
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">HK S1–S3 Science</span>
+          </h1>
+          <p id="appSubtitle" class="text-xs text-slate-400">
+            Physical Model for Current, Voltage & Resistance • No formula variables (VIR)
+          </p>
+        </div>
+      </div>
+
+      <!-- Controls: Language Switcher & Navigation Tabs -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-950 p-1 rounded-2xl border border-slate-800 text-xs">
+          <span class="px-2 text-slate-400 text-[11px] font-bold flex items-center gap-1">🌐 語言:</span>
+          <button id="langZh" onclick="setLanguage('zh')" class="lang-btn px-2.5 py-1 rounded-xl transition text-slate-300 hover:text-white">
+            繁體中文
+          </button>
+          <button id="langBi" onclick="setLanguage('bi')" class="lang-btn active px-2.5 py-1 rounded-xl transition text-slate-300 hover:text-white">
+            雙語 (Bilingual)
+          </button>
+          <button id="langEn" onclick="setLanguage('en')" class="lang-btn px-2.5 py-1 rounded-xl transition text-slate-300 hover:text-white">
+            English
+          </button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-2xl border border-slate-800 text-xs font-bold">
+          <button id="tabBtnSimulation" onclick="switchTab('simulation')" class="tab-btn active px-3 py-1.5 rounded-xl transition">
+            🚚 <span data-i18n="navSimulation">Dual Simulation</span>
+          </button>
+          <button id="tabBtnMeters" onclick="switchTab('meters')" class="tab-btn text-slate-400 hover:text-white px-3 py-1.5 rounded-xl transition">
+            🍢 <span data-i18n="navMeters">Meters (魚蛋串 & 夾公仔)</span>
+          </button>
+          <button id="tabBtnConcepts" onclick="switchTab('concepts')" class="tab-btn text-slate-400 hover:text-white px-3 py-1.5 rounded-xl transition">
+            📊 <span data-i18n="navConcepts">Property Comparison</span>
+          </button>
+          <button id="tabBtnQuiz" onclick="switchTab('quiz')" class="tab-btn text-slate-400 hover:text-white px-3 py-1.5 rounded-xl transition">
+            🧠 <span data-i18n="navQuiz">Misconceptions & Quiz</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 space-y-5">
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: DUAL SIMULATION (CLEAN CIRCUIT - STRICTLY NO METERS ON PAGE 1) -->
+    <!-- =================================================================== -->
+    <div id="tabSimulation" class="space-y-4">
+
+      <!-- Interactive Controls Panel -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+          <div class="text-xs text-slate-300 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="txtSimHelp">Adjust sliders to see both worlds change together! Notice how Resistance slows down the entire loop!</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnPlayPause" onclick="togglePlayPause()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
+              <span id="playIcon">⏸</span> <span id="playText">Pause 暫停</span>
+            </button>
+            <button onclick="resetSliders()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition border border-slate-700">
+              ↺ <span id="btnResetText">Reset 重設</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          
+          <!-- Voltage Slider Card -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-amber-500/30 flex flex-col justify-between space-y-2">
+            <div class="flex justify-between items-center">
+              <span id="lblVoltageHeader" class="font-bold text-amber-400 flex items-center gap-1.5">
+                ⚡ Voltage / 電壓
+              </span>
+              <span id="valVoltage" class="font-mono font-bold text-sm text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/40">
+                6.0 Volt (V)
+              </span>
+            </div>
+            <input id="sliderVoltage" type="range" min="1.5" max="12" step="0.5" value="6" oninput="onControlChange()" class="w-full">
+            <div class="text-[11px] text-slate-400 flex justify-between">
+              <span id="lblVoltageSubLeft">SF: Mail / Parcels per Courier (裝載包裹能量)</span>
+              <span id="lblVoltageSubRight" class="text-amber-400 font-medium">Energy supplied by cell (電池提供電能)</span>
+            </div>
+          </div>
+
+          <!-- Resistance Slider Card -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-indigo-500/30 flex flex-col justify-between space-y-2">
+            <div class="flex justify-between items-center">
+              <span id="lblResistanceHeader" class="font-bold text-indigo-400 flex items-center gap-1.5">
+                🛑 Resistance / 電阻
+              </span>
+              <span id="valResistance" class="font-mono font-bold text-sm text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded-lg border border-indigo-500/40">
+                3.0 Ohm (Ω)
+              </span>
+            </div>
+            <input id="sliderResistance" type="range" min="1" max="10" step="0.5" value="3" oninput="onControlChange()" class="w-full">
+            <div class="text-[11px] text-slate-400 flex justify-between">
+              <span id="lblResistanceSubLeft">SF: Muddy Road Difficulty (泥濘路段難行程度)</span>
+              <span id="lblResistanceSubRight" class="text-indigo-400 font-medium">Opposition to charge flow (阻礙電荷流動)</span>
+            </div>
+          </div>
+
+          <!-- Resulting Current Readout Card -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-emerald-500/30 flex flex-col justify-between space-y-2 md:col-span-2 lg:col-span-1">
+            <div class="flex justify-between items-center">
+              <span id="lblCurrentHeader" class="font-bold text-emerald-400 flex items-center gap-1.5">
+                🌊 Resulting Current / 結果電流
+              </span>
+              <span id="valCurrent" class="font-mono font-bold text-sm text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded-lg border border-emerald-500/40">
+                2.00 Ampere (A)
+              </span>
+            </div>
+            <div id="lblCurrentRule" class="text-[11px] text-slate-300 leading-snug">
+              <strong class="text-emerald-400">Rule 規律:</strong> More Voltage supplies more energy to push flow. Higher Resistance slows charges down.
+            </div>
+            <div class="text-[11px] text-slate-400 pt-0.5 flex items-center justify-between">
+              <span id="lblMeterHint">Want to measure Current or Voltage with meters?</span>
+              <button onclick="switchTab('meters')" class="text-cyan-400 hover:underline font-bold">
+                🍢 <span id="lblMeterLink">See Meters Tab</span> ➔
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Side-by-Side Dual Simulation Viewports -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <!-- LEFT CANVAS: SF COURIER ANALOGY -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 flex flex-col shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+              <h2 id="titleSFWorld" class="text-sm font-black text-white tracking-wide uppercase">
+                SF Delivery Analogy (順豐速遞世界)
+              </h2>
+            </div>
+            <span class="text-[11px] font-mono font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-800/40">
+              Analogy Model 比喻模型
+            </span>
+          </div>
+
+          <!-- Clean External Legend Dock -->
+          <div id="legendSF" class="flex flex-wrap gap-1.5 py-2 text-[11px] text-slate-300">
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🏢 <strong>Hub 倉庫</strong> = Cell 電池
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🏃 <strong>Courier 速遞員</strong> = Electric Charge 電荷
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              📦 <strong>Parcel 包裹</strong> = Energy (Voltage 電壓)
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🚧 <strong>Muddy Road 泥濘路</strong> = Resistance 電阻
+            </span>
+          </div>
+
+          <!-- Canvas Viewport -->
+          <div id="canvasWrapSF" class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 mt-1">
+            <canvas id="canvasSF" class="w-full h-full block"></canvas>
+          </div>
+
+          <div id="boxSFNote" class="mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300">
+            <strong class="text-rose-400">Analogy Insight:</strong> Couriers are <em>never consumed or destroyed</em>! They simply receive parcels at the warehouse, navigate the difficult road, drop off energy at the house, and return empty to loop continuously.
+          </div>
+        </div>
+
+        <!-- RIGHT CANVAS: REAL ELECTRIC CIRCUIT (PURE CIRCUIT - NO METERS) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 flex flex-col shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-cyan-400"></span>
+              <h2 id="titleCircuitWorld" class="text-sm font-black text-white tracking-wide uppercase">
+                Real Electric Circuit (真實電路世界)
+              </h2>
+            </div>
+            <span class="text-[11px] font-mono font-bold text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/40">
+              Flow: Positive (+) ➔ Negative (−)
+            </span>
+          </div>
+
+          <!-- Clean External Legend Dock -->
+          <div id="legendCircuit" class="flex flex-wrap gap-1.5 py-2 text-[11px] text-slate-300">
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🔋 <strong>Cell 乾電池</strong> = Energy Source
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🔵 <strong>Charge 正電荷 (+q)</strong> = Recycled Carrier
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              ✨ <strong>Halo 光圈</strong> = Energy (Voltage 電壓)
+            </span>
+            <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              🛑 <strong>Resistor 電阻器</strong> = Resistance 電阻
+            </span>
+          </div>
+
+          <!-- Canvas Viewport -->
+          <div id="canvasWrapCircuit" class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 mt-1">
+            <canvas id="canvasCircuit" class="w-full h-full block"></canvas>
+          </div>
+
+          <div id="boxCircuitNote" class="mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300">
+            <strong class="text-cyan-400">Physical Truth:</strong> Electric charges are <em>never used up or lost</em>! They leave the positive (+) terminal with electrical energy, pass through the resistor, give up energy at the bulb, and return to the negative (−) terminal.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: METERS & HK LAB METAPHORS (FISHBALL SKEWER & CLAW MACHINE) -->
+    <!-- =================================================================== -->
+    <div id="tabMeters" class="tab-pane hidden space-y-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-5">
+        <div>
+          <h2 id="txtMeterTabTitle" class="text-lg font-black text-white">
+            How to Measure: Authentic Hong Kong Lab Metaphors (如何測量：魚蛋串與夾公仔)
+          </h2>
+          <p id="txtMeterTabSub" class="text-xs text-slate-400 mt-1">
+            Visualizing why an Ammeter must be connected in Series, while a Voltmeter must be connected in Parallel across two conjunctions.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <!-- AMMETER (FISHBALL SKEWER METAPHOR) -->
+          <div class="bg-slate-950 border-2 border-cyan-500/40 rounded-3xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-3xl">🍢</span>
+                  <div>
+                    <h3 id="txtAmmeterTitle" class="text-base font-black text-cyan-300">Ammeter (安培計)</h3>
+                    <p id="txtAmmeterMeasure" class="text-[11px] text-slate-400">Measures <strong>Current (電流)</strong> in <strong>Ampere (A)</strong></p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  SERIES (串聯)
+                </span>
+              </div>
+
+              <!-- Schematic SVG -->
+              <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                <svg viewBox="0 0 320 70" class="w-full max-w-xs h-16">
+                  <line x1="20" y1="35" x2="125" y2="35" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                  <line x1="195" y1="35" x2="300" y2="35" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                  <polygon points="75,30 85,35 75,40" fill="#38bdf8"/>
+                  <polygon points="245,30 255,35 245,40" fill="#38bdf8"/>
+                  <circle cx="160" cy="35" r="26" fill="#082f49" stroke="#38bdf8" stroke-width="3"/>
+                  <text x="160" y="42" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900" font-family="Plus Jakarta Sans">A</text>
+                </svg>
+              </div>
+
+              <div class="text-xs space-y-2 text-slate-300">
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong id="txtFishballHead" class="text-cyan-300">🍢 The Curry Fishball Metaphor (咖哩魚蛋串):</strong>
+                  <p id="txtFishballDesc" class="mt-0.5 text-slate-400">
+                    To skewer fishballs onto a bamboo stick, each fishball must be threaded onto the same line one after another.
+                  </p>
+                </div>
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong id="txtFishballWhy" class="text-white">Why disconnect / break the wire? (為何必須截斷電線？)</strong>
+                  <p id="txtFishballWhyDesc" class="mt-0.5 text-slate-400">
+                    Current is the flow of electric charges. To count every single charge that passes, you <strong>must break open the circuit</strong> and insert the Ammeter directly into the wire path so 100% of charges pass through it.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-cyan-300 font-mono bg-cyan-950/60 p-2 rounded-xl border border-cyan-800/40 text-center">
+              Circuit Symbol: ───( A )─── (One unbroken loop / 單一迴路)
+            </div>
+          </div>
+
+          <!-- VOLTMETER (CLAW MACHINE METAPHOR) -->
+          <div class="bg-slate-950 border-2 border-amber-500/40 rounded-3xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-3xl">🕹️</span>
+                  <div>
+                    <h3 id="txtVoltmeterTitle" class="text-base font-black text-amber-300">Voltmeter (伏特計)</h3>
+                    <p id="txtVoltmeterMeasure" class="text-[11px] text-slate-400">Measures <strong>Voltage (電壓)</strong> in <strong>Volt (V)</strong></p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  PARALLEL (並聯)
+                </span>
+              </div>
+
+              <!-- Schematic SVG -->
+              <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                <svg viewBox="0 0 320 90" class="w-full max-w-xs h-20">
+                  <!-- Main Wire & Resistor/Bulb -->
+                  <line x1="20" y1="30" x2="135" y2="30" stroke="#38bdf8" stroke-width="3"/>
+                  <circle cx="160" cy="30" r="16" fill="#1e293b" stroke="#facc15" stroke-width="2"/>
+                  <line x1="149" y1="19" x2="171" y2="41" stroke="#facc15" stroke-width="2"/>
+                  <line x1="149" y1="41" x2="171" y2="19" stroke="#facc15" stroke-width="2"/>
+                  <line x1="185" y1="30" x2="300" y2="30" stroke="#38bdf8" stroke-width="3"/>
+
+                  <!-- Two Conjunction Points -->
+                  <circle cx="95" cy="30" r="4.5" fill="#facc15"/>
+                  <circle cx="225" cy="30" r="4.5" fill="#facc15"/>
+
+                  <!-- Parallel Leads -->
+                  <path d="M 95 30 L 95 65 L 135 65" fill="none" stroke="#facc15" stroke-width="2" stroke-dasharray="3 3"/>
+                  <path d="M 225 30 L 225 65 L 185 65" fill="none" stroke="#facc15" stroke-width="2" stroke-dasharray="3 3"/>
+
+                  <!-- Voltmeter Circle -->
+                  <circle cx="160" cy="65" r="17" fill="#451a03" stroke="#facc15" stroke-width="2.5"/>
+                  <text x="160" y="71" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="900" font-family="Plus Jakarta Sans">V</text>
+                </svg>
+              </div>
+
+              <div class="text-xs space-y-2 text-slate-300">
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong id="txtClawHead" class="text-amber-300">🕹️ The Claw Machine Metaphor (夾公仔機):</strong>
+                  <p id="txtClawDesc" class="mt-0.5 text-slate-400">
+                    Two claws reach down from above to grip across the two sides of a doll without disturbing the prize floor.
+                  </p>
+                </div>
+                <div class="p-2.5 bg-slate-900 rounded-xl">
+                  <strong id="txtClawWhy" class="text-white">Why DO NOT disconnect the wire? (為何絕不切斷電線？)</strong>
+                  <p id="txtClawWhyDesc" class="mt-0.5 text-slate-400">
+                    Voltage measures the <strong>energy difference</strong> across two sides of a component. You keep the original circuit intact, branch two test leads, and touch the two junctions!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-amber-300 font-mono bg-amber-950/60 p-2 rounded-xl border border-amber-800/40 text-center">
+              Circuit Symbol: ●───( V )───● (Two junction nodes / 跨接兩端節點)
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: THREE PROPERTIES & EXACT LESSON DEFINITIONS -->
+    <!-- =================================================================== -->
+    <div id="tabConcepts" class="tab-pane hidden space-y-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-5">
+        <div>
+          <h2 id="txtPropTitle" class="text-lg font-black text-white">Three Fundamental Electrical Properties (三大電學物理量)</h2>
+          <p id="txtPropSub" class="text-xs text-slate-400 mt-1">
+            Exact Hong Kong Junior Secondary Integrated Science curriculum definitions. No abstract formula symbols (VIR)!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- CURRENT CARD -->
+          <div class="bg-slate-950 border-2 border-emerald-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">🌊</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">
+                  Unit: Ampere / 安培 (A)
+                </span>
+              </div>
+              <h3 id="cardCurrentTitle" class="text-base font-black text-white mt-2">Current (電流)</h3>
+              <p id="cardCurrentDef" class="text-xs text-emerald-200/90 mt-2 leading-relaxed bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-500/30">
+                The flow of electric charges, flowing from the positive terminal of the cell to the negative terminal.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+              <div id="cardCurrentAnalogy" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> The flow of delivery men walking along the road loop from warehouse to destination and back.
+              </div>
+              <div id="cardCurrentMeter" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-cyan-400 font-bold">Meter:</span> <strong>Ammeter (安培計)</strong> connected in <em>Series (串聯 魚蛋串)</em>.
+              </div>
+            </div>
+          </div>
+
+          <!-- VOLTAGE CARD -->
+          <div class="bg-slate-950 border-2 border-amber-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">⚡</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
+                  Unit: Volt / 伏特 (V)
+                </span>
+              </div>
+              <h3 id="cardVoltageTitle" class="text-base font-black text-white mt-2">Voltage (電壓)</h3>
+              <p id="cardVoltageDef" class="text-xs text-amber-200/90 mt-2 leading-relaxed bg-amber-950/40 p-2.5 rounded-xl border border-amber-500/30">
+                The amount of electrical energy supplied by the cell to the electric charges to flow around the circuit.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+              <div id="cardVoltageAnalogy" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> The amount of mail and parcels loaded onto each delivery man at the warehouse before setting off.
+              </div>
+              <div id="cardVoltageMeter" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-cyan-400 font-bold">Meter:</span> <strong>Voltmeter (伏特計)</strong> connected in <em>Parallel (並聯 夾公仔)</em>.
+              </div>
+            </div>
+          </div>
+
+          <!-- RESISTANCE CARD -->
+          <div class="bg-slate-950 border-2 border-indigo-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl">🛑</span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">
+                  Unit: Ohm / 歐姆 (Ω)
+                </span>
+              </div>
+              <h3 id="cardResistanceTitle" class="text-base font-black text-white mt-2">Resistance (電阻)</h3>
+              <p id="cardResistanceDef" class="text-xs text-indigo-200/90 mt-2 leading-relaxed bg-indigo-950/40 p-2.5 rounded-xl border border-indigo-500/30">
+                How difficult it is for the electric charges to flow through the electrical conductor.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+              <div id="cardResistanceAnalogy" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-rose-400 font-bold">SF Analogy:</span> How difficult it is for the delivery man to walk through the road (muddy, bumpy road conditions).
+              </div>
+              <div id="cardResistanceEffect" class="p-2 bg-slate-900 rounded-xl text-slate-300">
+                <span class="text-indigo-400 font-bold">Key Principle:</span> Higher resistance opposes the flow of charges, slowing down the entire circuit (lowering Current).
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Precise Side-by-Side Comparison Table -->
+        <div class="mt-4 overflow-x-auto rounded-2xl border border-slate-800">
+          <table class="w-full text-xs text-left text-slate-300">
+            <thead class="bg-slate-950 text-slate-400 font-bold uppercase text-[11px] border-b border-slate-800">
+              <tr>
+                <th class="p-3">SF Express Analogy (順豐比喻)</th>
+                <th class="p-3">Electrical Property (電學物理量)</th>
+                <th class="p-3">Precise Lesson Definition (課堂精準定義)</th>
+                <th class="p-3">Unit & Symbol (單位符號)</th>
+                <th class="p-3">How to Measure (測量方法)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 bg-slate-900/60">
+              <tr>
+                <td class="p-3 font-semibold text-rose-300">🏃 Flow of delivery men walking along the road loop</td>
+                <td class="p-3 font-bold text-white">Current (電流)</td>
+                <td class="p-3 text-emerald-300">The flow of electric charges, flowing from the positive terminal of the cell to the negative terminal</td>
+                <td class="p-3 font-mono text-emerald-400 font-bold">Ampere (安培) [ A ]</td>
+                <td class="p-3">Ammeter (安培計) — 串聯 Series (魚蛋串)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-rose-300">📦 Amount of mail / parcels loaded at warehouse</td>
+                <td class="p-3 font-bold text-white">Voltage (電壓)</td>
+                <td class="p-3 text-amber-300">The amount of electrical energy supplied by the cell to the electric charges to flow around the circuit</td>
+                <td class="p-3 font-mono text-amber-400 font-bold">Volt (伏特) [ V ]</td>
+                <td class="p-3">Voltmeter (伏特計) — 並聯 Parallel (夾公仔)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-rose-300">🚧 How difficult the delivery man walks through the road (muddy road)</td>
+                <td class="p-3 font-bold text-indigo-300">Resistance (電阻)</td>
+                <td class="p-3 text-indigo-200">How difficult it is for the electric charges to flow through the electrical conductor</td>
+                <td class="p-3 font-mono text-indigo-400 font-bold">Ohm (歐姆) [ Ω ]</td>
+                <td class="p-3">Calculated / Ohmmeter (歐姆計)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-rose-300">🏢 Central Warehouse Hub (順豐分發總站)</td>
+                <td class="p-3 font-bold text-white">Dry Cell (乾電池)</td>
+                <td class="p-3 text-slate-300">Supplies electrical energy to charges to move</td>
+                <td class="p-3 font-mono text-slate-400">Power Source (電源)</td>
+                <td class="p-3">Supplies Voltage</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-rose-300">🏠 Customer House (顧客住宅簽收包裹)</td>
+                <td class="p-3 font-bold text-white">Light Bulb (燈泡)</td>
+                <td class="p-3 text-slate-300">Converts charges' electrical energy into light and heat</td>
+                <td class="p-3 font-mono text-slate-400">Load / Appliance (負載)</td>
+                <td class="p-3">Consumes energy, NOT charges!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Relationship Summary -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 border border-slate-800 space-y-2 text-xs">
+          <h4 id="lblRelationshipTitle" class="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+            How They Change With Each Other (物理量之間的相互關係)
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+            <div id="boxRelVoltage" class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+              <strong class="text-amber-400">1. More Voltage (更強電壓 / 更多乾電池):</strong>
+              <p class="mt-1 text-slate-400">
+                Supplies more energy to charges ➔ Couriers carry more packages and push faster ➔ <strong>Current increases</strong>. (電壓增加，推動能量更大，電流增加。)
+              </p>
+            </div>
+            <div id="boxRelResistance" class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+              <strong class="text-indigo-400">2. Higher Resistance (電阻增加 / 路段更加泥濘難行):</strong>
+              <p class="mt-1 text-slate-400">
+                Greater difficulty for charges to flow ➔ Muddy road slows down couriers ➔ <strong>Current decreases</strong>. (電阻增加，阻礙變大，電流減少。)
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: MISCONCEPTIONS & CONCEPT CHECK QUIZ -->
+    <!-- =================================================================== -->
+    <div id="tabQuiz" class="tab-pane hidden space-y-5">
+      
+      <!-- Top Section: Core Junior Secondary Misconceptions -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
+        <div>
+          <h2 id="txtMiscTitle" class="text-lg font-black text-white">
+            Common Misconceptions in S2 Science (初二學生常見誤解澄清)
+          </h2>
+          <p id="txtMiscSub" class="text-xs text-slate-400 mt-1">
+            Understanding why intuitive "gut-feelings" about circuits are physically wrong!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          
+          <div class="p-4 rounded-2xl bg-slate-950 border border-rose-500/30 space-y-2">
+            <div class="flex items-center gap-2 text-rose-400 font-bold">
+              <span>❌</span>
+              <span>"Current is eaten up by the bulb"</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">
+              <strong>Truth:</strong> Charges are <em>never consumed</em>! Couriers do not get eaten at the house; they drop off packages and return. Current before and after the bulb is <strong>identical</strong>!
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950 border border-amber-500/30 space-y-2">
+            <div class="flex items-center gap-2 text-amber-400 font-bold">
+              <span>❌</span>
+              <span>"Voltage and Current are the same"</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">
+              <strong>Truth:</strong> <strong>Voltage</strong> is the energy supplied per charge (parcels per courier). <strong>Current</strong> is the flow of charges (couriers moving along the path).
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950 border border-indigo-500/30 space-y-2">
+            <div class="flex items-center gap-2 text-indigo-400 font-bold">
+              <span>❌</span>
+              <span>"Charges only slow down in the resistor"</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">
+              <strong>Truth:</strong> Resistance slows down the <strong>entire loop</strong> equally, just like a single muddy road section holds up the entire delivery convoy!
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom Section: Interactive Concept Check Quiz -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 max-w-2xl mx-auto">
+        <div>
+          <h3 id="txtQuizTitle" class="text-base font-black text-white">Junior Science Concept Self-Check (初中科學概念自我檢測)</h3>
+          <p id="txtQuizSub" class="text-xs text-slate-400 mt-1">Test your understanding of couriers, charges, resistance, and meter connections.</p>
+        </div>
+
+        <div id="quizContainer" class="space-y-4 text-xs">
+          <!-- Populated dynamically by JavaScript -->
+        </div>
+
+        <div id="quizScoreBox" class="hidden p-4 rounded-2xl bg-emerald-950/70 border border-emerald-500/40 text-center">
+          <p class="text-sm font-bold text-emerald-300" id="quizCongratTitle">🎉 Excellent Work! 做得好！</p>
+          <p class="text-xs text-slate-300 mt-1" id="quizScoreText"></p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- =================================================================== -->
+  <!-- JAVASCRIPT ENGINE & SIMULATION CONTROLLER -->
+  <!-- =================================================================== -->
+  <script>
+    // --- Application State ---
+    const State = {
+      lang: 'bi',         // 'zh' | 'en' | 'bi'
+      voltage: 6.0,       // Volt (V)
+      resistance: 3.0,    // Resistance in Ohm (Ω)
+      isRunning: true,
+      time: 0,
+      courierCount: 7
+    };
+
+    // --- Web Audio API Synthesizer (Zero External Audio Dependencies) ---
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      click() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(640, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {}
+      },
+      correct() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+          osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.08); // E5
+          osc.frequency.setValueAtTime(783.99, this.ctx.currentTime + 0.16); // G5
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.28);
+        } catch (e) {}
+      }
+    };
+
+    // --- Multilingual Dictionaries with Exact Lesson Definitions ---
+    const I18N = {
+      zh: {
+        appTitle: "順豐速遞與電路比喻互動教室",
+        appSubtitle: "電流、電壓與電阻實體比喻 • 擺脫抽象代數符號 (VIR)",
+        navSimulation: "雙對比模擬",
+        navMeters: "儀表測量 (魚蛋串與夾公仔)",
+        navConcepts: "三大物理量對照表",
+        navQuiz: "常見誤解與小測",
+        simHelp: "拖動下方滑桿，即時觀察「速遞員世界」與「真實電路世界」的聯動變化！留意電阻如何影響整個迴路的流動！",
+        play: "播放",
+        pause: "暫停",
+        reset: "重設",
+        voltageHeader: "⚡ 電壓 (Voltage)",
+        voltageSubLeft: "順豐：每位速遞員攜帶的包裹數量",
+        voltageSubRight: "電池提供給電荷以流動的電能數量",
+        resistanceHeader: "🛑 電阻 (Resistance)",
+        resistanceSubLeft: "順豐：泥濘路段難行程度",
+        resistanceSubRight: "電荷流經導體時所遇到的困難程度",
+        currentHeader: "🌊 結果電流 (Resulting Current)",
+        currentRule: "<strong>物理規律：</strong> 電壓愈高（更多電能推動），電流愈大；電阻愈高（阻礙愈大），電流愈小。",
+        meterHint: "想知道如何量度電流或電壓？",
+        meterLink: "查看儀表教學分頁",
+        sfWorldTitle: "順豐速遞比喻世界",
+        sfWorldModel: "比喻模型",
+        circuitWorldTitle: "真實電路世界",
+        circuitWorldModel: "電荷流動方向：正極 (+) ➔ 負極 (−)",
+        sfLegendHub: "🏢 倉庫 = 乾電池 (提供包裹/能量)",
+        sfLegendCourier: "🏃 速遞員 = 電荷 (循環往復，不被消耗)",
+        sfLegendParcel: "📦 包裹 = 電壓 (攜帶之電能)",
+        sfLegendMud: "🚧 泥濘路段 = 電阻 (路面難行程度)",
+        circuitLegendCell: "🔋 乾電池 = 電源",
+        circuitLegendCharge: "🔵 正電荷 (+q) = 載體",
+        circuitLegendHalo: "✨ 光圈 = 攜帶之電能",
+        circuitLegendResistor: "🛑 電阻器 = 電阻 (阻礙流動)",
+        sfNote: "<strong>比喻啟示：</strong> 速遞員<em>絕不會在送貨途中消失或被吃掉</em>！他們只是在倉庫取貨，克服難行的泥濘路段，把包裹送到住宅，然後空手返回倉庫循環再送。",
+        circuitNote: "<strong>物理真理：</strong> 電荷<em>絕不會在電路中被用完或消失</em>！電荷由正極（+）出發攜帶電能，克服電阻器的阻礙，在燈泡處轉化能量，最後回到負極（−）。",
+        propTitle: "三大基本電學物理量",
+        propSub: "初中綜合科學課程標準：精準課程定義，掌握物理意義與實用單位！",
+        cardCurrentDef: "電荷的流動，電荷由電池的正極流向負極。",
+        cardCurrentAnalogy: "<span class='text-rose-400 font-bold'>順豐比喻：</span> 順豐速遞員在道路循環路線上的前進流動。",
+        cardCurrentMeter: "<span class='text-cyan-400 font-bold'>測量儀表：</span> <strong>安培計 (Ammeter)</strong>，必須以<em>串聯 (Series 魚蛋串)</em>接入。",
+        cardVoltageDef: "電池提供給電荷以讓其在電路中流動的電能數量。",
+        cardVoltageAnalogy: "<span class='text-rose-400 font-bold'>順豐比喻：</span> 速遞員在倉庫出發前，倉庫派發給他們帶上路交付的郵件與包裹能量。",
+        cardVoltageMeter: "<span class='text-cyan-400 font-bold'>測量儀表：</span> <strong>伏特計 (Voltmeter)</strong>，必須以<em>並聯 (Parallel 夾公仔)</em>接入。",
+        cardResistanceDef: "電荷流經導體時所遇到的困難程度。",
+        cardResistanceAnalogy: "<span class='text-rose-400 font-bold'>順豐比喻：</span> 速遞員走過路面時的困難程度（如泥濘、凸凹路面）。",
+        cardResistanceEffect: "<span class='text-indigo-400 font-bold'>核心原則：</span> 電阻代表阻礙電荷流動的困難程度。電阻愈大，電流愈小。",
+        relationshipTitle: "物理量之間的相互關係",
+        relVoltage: "<strong class='text-amber-400'>1. 電壓增加（加入更多乾電池）：</strong><p class='mt-1 text-slate-400'>提供給電荷更多電能 ➔ 速遞員攜帶更多包裹邁步向前 ➔ <strong>電流增加</strong>。</p>",
+        relResistance: "<strong class='text-indigo-400'>2. 電阻增加（路況更加泥濘難行）：</strong><p class='mt-1 text-slate-400'>電荷流經導體時困難程度加大 ➔ 泥濘路阻拖慢速遞員步伐 ➔ <strong>電流減少</strong>。</p>",
+        meterTabTitle: "如何測量：生動香港實驗室比喻 (魚蛋串與夾公仔)",
+        meterTabSub: "深刻理解為何安培計必須「串聯」，而伏特計必須「並聯」。",
+        ammeterMeasure: "測量 <strong>電流 (Current)</strong>，單位為 <strong>安培 (A)</strong>",
+        fishballHead: "🍢 咖哩魚蛋串比喻 (串聯 Series)：",
+        fishballDesc: "就像用一根竹籤串起咖哩魚蛋，魚蛋必須一顆接一顆排在同一條線上。",
+        fishballWhy: "為何必須切斷電線？",
+        fishballWhyDesc: "電流是指電荷的流動。為了逐一清點通過的電荷，你<strong>必須斷開電路</strong>，把安培計串接在電線中，讓全部電荷100%穿過它！",
+        voltmeterMeasure: "測量 <strong>電壓 (Voltage)</strong>，單位為 <strong>伏特 (V)</strong>",
+        clawHead: "🕹️ 夾公仔機比喻 (並聯 Parallel)：",
+        clawDesc: "兩隻機械爪從上方伸下來，跨接夾在公仔的兩側，完全不拆散原本擺放好的台面。",
+        clawWhy: "為何絕不能切斷電線？",
+        clawWhyDesc: "電壓是測量電器兩端的<strong>電能差</strong>。你必須保持原本電路完整通暢，額外拉出兩條測試導線，輕輕夾住電器的兩個節點！",
+        miscTitle: "初二學生常見誤解澄清",
+        miscSub: "了解直覺判斷在物理上的錯誤，建立牢固概念！",
+        quizTitle: "初中科學概念自我檢測",
+        quizSub: "檢測你對速遞員比喻、電荷運動、電阻及儀表連接的理解。"
+      },
+      en: {
+        appTitle: "SF Delivery Analogy vs Electric Circuit",
+        appSubtitle: "Physical Model for Current, Voltage & Resistance • No formula variables (VIR)",
+        navSimulation: "Dual Simulation",
+        navMeters: "Meters (Fishball & Claw)",
+        navConcepts: "Property Comparison",
+        navQuiz: "Misconceptions & Quiz",
+        simHelp: "Adjust sliders below to see both worlds change together! Notice how Resistance slows down the entire loop!",
+        play: "Play",
+        pause: "Pause",
+        reset: "Reset",
+        voltageHeader: "⚡ Voltage",
+        voltageSubLeft: "SF: Mail / Parcels per Courier",
+        voltageSubRight: "Amount of energy supplied by cell",
+        resistanceHeader: "🛑 Resistance",
+        resistanceSubLeft: "SF: Muddy Road Difficulty",
+        resistanceSubRight: "How difficult it is for charges to flow",
+        currentHeader: "🌊 Resulting Current",
+        currentRule: "<strong>Physical Rule:</strong> Higher Voltage pushes more energy, increasing Current. Higher Resistance slows charges down.",
+        meterHint: "Want to know how to measure Current or Voltage?",
+        meterLink: "See Meters Tab",
+        sfWorldTitle: "SF Express Delivery World",
+        sfWorldModel: "Analogy Model",
+        circuitWorldTitle: "Real Electric Circuit World",
+        circuitWorldModel: "Charges flow: Positive (+) ➔ Negative (−)",
+        sfLegendHub: "🏢 Hub = Cell (supplies energy/parcels)",
+        sfLegendCourier: "🏃 Courier = Charge (recycled continuously)",
+        sfLegendParcel: "📦 Parcel = Voltage (energy payload)",
+        sfLegendMud: "🚧 Muddy Road = Resistance",
+        circuitLegendCell: "🔋 Cell = Power source",
+        circuitLegendCharge: "🔵 Charge (+q) = Recycled carrier",
+        circuitLegendHalo: "✨ Halo = Electrical energy",
+        circuitLegendResistor: "🛑 Resistor = Resistance",
+        sfNote: "<strong>Analogy Insight:</strong> Couriers are <em>never consumed or destroyed</em>! They collect mail at the warehouse, navigate the muddy road, deliver energy to the house, and return empty-handed to repeat the loop.",
+        circuitNote: "<strong>Physical Truth:</strong> Electric charges are <em>never used up or lost</em>! They flow out from the positive (+) terminal with energy, overcome the resistor's opposition, release energy at the bulb, and return to the negative (−) terminal.",
+        propTitle: "Three Fundamental Electrical Properties",
+        propSub: "Standard Junior Secondary Science syllabus: Physical definitions. No formula symbols (VIR)!",
+        cardCurrentDef: "The flow of electric charges, flowing from the positive terminal of the cell to the negative terminal.",
+        cardCurrentAnalogy: "<span class='text-rose-400 font-bold'>SF Analogy:</span> The flow of delivery men walking along the road loop from warehouse to destination and back.",
+        cardCurrentMeter: "<span class='text-cyan-400 font-bold'>Meter Used:</span> <strong>Ammeter</strong> connected in <em>Series (Fishball Skewer)</em>.",
+        cardVoltageDef: "The amount of electrical energy supplied by the cell to the electric charges to flow around the circuit.",
+        cardVoltageAnalogy: "<span class='text-rose-400 font-bold'>SF Analogy:</span> The amount of mail and parcels loaded onto each delivery man at the warehouse before setting off.",
+        cardVoltageMeter: "<span class='text-cyan-400 font-bold'>Meter Used:</span> <strong>Voltmeter</strong> connected in <em>Parallel (Claw Machine)</em>.",
+        cardResistanceDef: "How difficult it is for the electric charges to flow through the electrical conductor.",
+        cardResistanceAnalogy: "<span class='text-rose-400 font-bold'>SF Analogy:</span> How difficult it is for the delivery man to walk through the road (muddy, bumpy road conditions).",
+        cardResistanceEffect: "<span class='text-indigo-400 font-bold'>Key Principle:</span> Resistance represents opposition to charge flow. Higher resistance reduces Current.",
+        relationshipTitle: "How Properties Change With Each Other",
+        relVoltage: "<strong class='text-amber-400'>1. More Voltage (Adding more cells):</strong><p class='mt-1 text-slate-400'>Supplies more energy to charges ➔ Couriers carry more packages and push faster ➔ <strong>Current increases</strong>.</p>",
+        relResistance: "<strong class='text-indigo-400'>2. Higher Resistance (Muddier road condition):</strong><p class='mt-1 text-slate-400'>Greater difficulty for charges to flow ➔ Muddy road slows couriers down ➔ <strong>Current decreases</strong>.</p>",
+        meterTabTitle: "How to Measure: Authentic Hong Kong Lab Metaphors",
+        meterTabSub: "Understand why an Ammeter must be in Series, while a Voltmeter must be in Parallel across two conjunctions.",
+        ammeterMeasure: "Measures <strong>Current</strong> in <strong>Ampere (A)</strong>",
+        fishballHead: "🍢 The Curry Fishball Metaphor (Series):",
+        fishballDesc: "Like skewering fishballs onto a single bamboo stick, all items must be threaded in one unbroken line.",
+        fishballWhy: "Why break the wire?",
+        fishballWhyDesc: "Current is the flow of electric charges. To count every single charge, you <strong>must break open the wire</strong> and insert the Ammeter inline so 100% of charges pass through it.",
+        voltmeterMeasure: "Measures <strong>Voltage</strong> in <strong>Volt (V)</strong>",
+        clawHead: "🕹️ The Claw Machine Metaphor (Parallel):",
+        clawDesc: "Two mechanical claws reach down from above to grip across the two sides of a toy without disrupting the prize floor.",
+        clawWhy: "Why DO NOT break the wire?",
+        clawWhyDesc: "Voltage measures the <strong>energy difference</strong> across two sides of a component. You keep the main circuit intact and branch two test leads across the junctions!",
+        miscTitle: "Common Misconceptions in S2 Science",
+        miscSub: "Understanding why intuitive student notions are physically incorrect.",
+        quizTitle: "Junior Science Concept Self-Check",
+        quizSub: "Check your conceptual grasp of couriers, charges, resistance, and meter connections."
+      },
+      bi: {
+        appTitle: "SF Delivery Analogy vs Electric Circuit 順豐速遞與電路比喻",
+        appSubtitle: "Physical Model for Current, Voltage & Resistance • 雙語對照 Bilingual Science Learning",
+        navSimulation: "Dual Simulation 雙對比模擬",
+        navMeters: "Meters 儀表 (魚蛋串 & 夾公仔)",
+        navConcepts: "Property Comparison 物理量全表",
+        navQuiz: "Misconceptions & Quiz 誤解與測驗",
+        simHelp: "Adjust sliders to observe both worlds! Notice how Resistance slows down the entire loop! 留意電阻如何影響整個迴路！",
+        play: "Play 播放",
+        pause: "Pause 暫停",
+        reset: "Reset 重設",
+        voltageHeader: "⚡ Voltage / 電壓",
+        voltageSubLeft: "SF: Mail / Parcels (每人包裹數量)",
+        voltageSubRight: "Energy supplied by cell (電池提供電能)",
+        resistanceHeader: "🛑 Resistance / 電阻",
+        resistanceSubLeft: "SF: Muddy Road Difficulty (泥濘路段難行程度)",
+        resistanceSubRight: "Opposition to charge flow (阻礙電荷流動)",
+        currentHeader: "🌊 Resulting Current / 結果電流",
+        currentRule: "<strong>Rule 規律:</strong> Higher Voltage pushes MORE flow. Higher Resistance SLOWS flow down. (電壓愈高電流愈大；電阻愈高電流愈小。)",
+        meterHint: "Want to measure Current or Voltage? 想知道如何測量？",
+        meterLink: "See Meters Tab 查看儀表分頁",
+        sfWorldTitle: "SF Delivery Analogy (順豐速遞世界)",
+        sfWorldModel: "Analogy Model 比喻模型",
+        circuitWorldTitle: "Real Electric Circuit (真實電路世界)",
+        circuitWorldModel: "Flow: Positive (+) ➔ Negative (−) (正極流向負極)",
+        sfLegendHub: "🏢 Hub 倉庫 = Cell 電池",
+        sfLegendCourier: "🏃 Courier 速遞員 = Charge 電荷",
+        sfLegendParcel: "📦 Parcel 包裹 = Voltage 電壓",
+        sfLegendMud: "🚧 Muddy Road 泥濘路 = Resistance 電阻",
+        circuitLegendCell: "🔋 Cell 乾電池 = Source 電源",
+        circuitLegendCharge: "🔵 Charge 電荷 (+q) = Carrier 載體",
+        circuitLegendHalo: "✨ Halo 光圈 = Energy 電能",
+        circuitLegendResistor: "🛑 Resistor 電阻器 = Resistance 電阻",
+        sfNote: "<strong>Analogy Insight:</strong> Couriers are <em>never consumed</em>! They collect mail at warehouse, navigate muddy road, deliver to house, and return empty. (速遞員絕不會被吃掉，只是循環運送！)",
+        circuitNote: "<strong>Physical Truth:</strong> Electric charges are <em>never used up</em>! They flow out from (+) terminal with energy, overcome resistance, transfer it at bulb, and return to (−) terminal. (電荷絕不會被消耗！)",
+        propTitle: "Three Electrical Properties (三大電學物理量)",
+        propSub: "Hong Kong S1–S3 Syllabus. No abstract formula symbols (VIR)! (不使用抽象代數符號)",
+        cardCurrentDef: "The flow of electric charges, flowing from the positive terminal of the cell to the negative terminal. (電荷的流動，電荷由電池的正極流向負極。)",
+        cardCurrentAnalogy: "<span class='text-rose-400 font-bold'>SF:</span> The flow of delivery men walking along the road loop from warehouse to destination and back. (順豐速遞員在道路循環路線上的前進流動。)",
+        cardCurrentMeter: "<span class='text-cyan-400 font-bold'>Meter:</span> <strong>Ammeter (安培計)</strong> in <em>Series (串聯 魚蛋串)</em>.",
+        cardVoltageDef: "The amount of electrical energy supplied by the cell to the electric charges to flow around the circuit. (電池提供給電荷以讓其在電路中流動的電能數量。)",
+        cardVoltageAnalogy: "<span class='text-rose-400 font-bold'>SF:</span> The amount of mail and parcels loaded onto each delivery man at warehouse. (倉庫派發給速遞員帶上路交付的郵件與包裹。)",
+        cardVoltageMeter: "<span class='text-cyan-400 font-bold'>Meter:</span> <strong>Voltmeter (伏特計)</strong> in <em>Parallel (並聯 夾公仔)</em>.",
+        cardResistanceDef: "How difficult it is for the electric charges to flow through the electrical conductor. (電荷流經導體時所遇到的困難程度。)",
+        cardResistanceAnalogy: "<span class='text-rose-400 font-bold'>SF:</span> How difficult it is for the delivery man to walk through the road (muddy, bumpy road conditions). (速遞員走過路面時的困難程度。)",
+        cardResistanceEffect: "<span class='text-indigo-400 font-bold'>Principle:</span> Resistance represents opposition to flow (電阻代表阻礙程度). Greater resistance reduces current flow.",
+        relationshipTitle: "How They Change Together (物理量之間的相互關係)",
+        relVoltage: "<strong class='text-amber-400'>1. More Voltage (更多乾電池):</strong><p class='mt-1 text-slate-400'>More energy supplied to charges ➔ Couriers carry more packages ➔ <strong>Current increases (電流增加)</strong>.</p>",
+        relResistance: "<strong class='text-indigo-400'>2. Higher Resistance (電阻增加 / 路段更加泥濘難行):</strong><p class='mt-1 text-slate-400'>Greater difficulty for charges to flow ➔ Mud slows couriers down ➔ <strong>Current decreases (電流減少)</strong>.</p>",
+        meterTabTitle: "How to Measure: Authentic Hong Kong Lab Metaphors (如何測量：魚蛋串與夾公仔)",
+        meterTabSub: "Ammeter in Series (串聯), Voltmeter in Parallel (並聯).",
+        ammeterMeasure: "Measures <strong>Current (電流)</strong> in <strong>Ampere / 安培 (A)</strong>",
+        fishballHead: "🍢 Curry Fishball Metaphor (咖哩魚蛋串 / 串聯):",
+        fishballDesc: "Like skewering fishballs onto a bamboo stick, everything must be threaded in one line. (如竹籤串魚蛋，排在同一線上。)",
+        fishballWhy: "Why break the wire? (為何必須截斷電線？)",
+        fishballWhyDesc: "Current is the flow of charges. You <strong>must break the circuit</strong> and insert the Ammeter inline so 100% of charges pass through it. (必須切斷電線串入安培計，讓所有電荷通過受檢閱！)",
+        voltmeterMeasure: "Measures <strong>Voltage (電壓)</strong> in <strong>Volt / 伏特 (V)</strong>",
+        clawHead: "🕹️ Claw Machine Metaphor (夾公仔機 / 並聯):",
+        clawDesc: "Two claws reach down from above to grip across two sides of a doll. (兩隻機械爪從外跨接夾住兩端。)",
+        clawWhy: "Why DO NOT break the wire? (為何絕不切斷電線？)",
+        clawWhyDesc: "Measures <strong>energy difference</strong> across two sides. Keep original wire intact and branch two leads across junctions! (測量兩端電能差距，電線保持完整，以兩測試引線跨接兩端！)",
+        miscTitle: "Common Misconceptions in S2 Science (初二常見誤解)",
+        miscSub: "Debunking everyday intuition with scientific physical truth.",
+        quizTitle: "Junior Science Concept Check (初中科學概念自我檢測)",
+        quizSub: "Test your understanding of couriers, charges, resistance, and meter connections."
+      }
+    };
+
+    const QuizData = {
+      zh: [
+        {
+          q: "1. 根據課堂精準定義，甚麼是「電阻 (Resistance)」？",
+          opts: [
+            "電池提供給電荷以流動的電能數量",
+            "電荷流經導體時所遇到的困難程度",
+            "電荷由電池的正極流向負極的流動",
+            "燈泡所吃掉的電荷總數"
+          ],
+          ans: 1,
+          exp: "完全正確！電阻就是「電荷流經導體時所遇到的困難程度」。"
+        },
+        {
+          q: "2. 在順豐速遞比喻中，「泥濘路段（速遞員走過路面時的困難程度）」代表電路中的甚麼？",
+          opts: [
+            "電流 (Current)",
+            "電壓 (Voltage)",
+            "電阻 (Resistance)",
+            "安培計 (Ammeter)"
+          ],
+          ans: 2,
+          exp: "答得好！泥濘路段的難行程度，正好對應電荷流經導體時的困難程度，即電阻 (Resistance)。"
+        },
+        {
+          q: "3. 很多初二同學誤以為「燈泡發光時會吃掉或消耗電荷」，這為甚麼是錯的？",
+          opts: [
+            "因為電荷是循環往復的載體，絕不被消耗；燈泡只轉化電荷所攜帶的電能",
+            "因為電荷會在燈泡內部倍增",
+            "因為所有電荷在出發前已經被電池吃掉了",
+            "因為只有負極有電荷"
+          ],
+          ans: 0,
+          exp: "優秀！就像順豐速遞員不會在顧客家裡被吃掉一樣，電荷永遠不會被消耗，燈泡只消耗並轉化其攜帶的「電能」！"
+        },
+        {
+          q: "4. 伏特計（Voltmeter）就像「夾公仔機」，正確的接駁方法是甚麼？",
+          opts: [
+            "切斷主電線，像魚蛋串一樣串聯在電路中",
+            "絕不切斷主電線，以兩條測試引線跨接在組件的兩端節點（並聯）",
+            "直接接在開關旁邊",
+            "把伏特計插在電池的正極內部"
+          ],
+          ans: 1,
+          exp: "答對了！伏特計是用來測量兩點間的電能差，因此主電路保持完好，用兩隻夾子跨接兩端節點（並聯）。"
+        }
+      ],
+      en: [
+        {
+          q: "1. According to the lesson definition, what is 'Resistance'?",
+          opts: [
+            "The amount of electrical energy supplied by the cell",
+            "How difficult it is for the electric charges to flow through the electrical conductor",
+            "The flow of electric charges from positive to negative terminal",
+            "The total number of charges consumed by the bulb"
+          ],
+          ans: 1,
+          exp: "Spot on! Resistance is 'how difficult it is for the electric charges to flow through the electrical conductor'."
+        },
+        {
+          q: "2. In the SF analogy, what does the muddy road (how difficult the delivery man walks through the road) represent?",
+          opts: [
+            "Current",
+            "Voltage",
+            "Resistance",
+            "Ammeter"
+          ],
+          ans: 2,
+          exp: "Correct! The road difficulty directly represents how difficult it is for charges to flow through the conductor, which is Resistance."
+        },
+        {
+          q: "3. Many students mistakenly think charges are 'eaten up' by the bulb. Why is this wrong?",
+          opts: [
+            "Charges are recycled carriers that are NEVER consumed; only the electrical energy they carry is converted",
+            "Because charges multiply inside the bulb",
+            "Because the battery eats all charges before they start",
+            "Because only the negative terminal has charges"
+          ],
+          ans: 0,
+          exp: "Spot on! Just like couriers are not eaten at the customer's house, charges are never destroyed; only their energy payload is delivered!"
+        },
+        {
+          q: "4. The Voltmeter acts like a 'Claw Machine'. How should it be properly connected?",
+          opts: [
+            "Break the main wire and connect inline in series",
+            "Keep the circuit intact and branch two leads across the component's two junction nodes in parallel",
+            "Connect it directly to the switch only",
+            "Wrap it around the cell without leads"
+          ],
+          ans: 1,
+          exp: "Excellent! Voltage measures the energy difference across two points, so two leads clamp across the component in parallel."
+        }
+      ],
+      bi: [
+        {
+          q: "1. What is Resistance? (甚麼是電阻？)",
+          opts: [
+            "Energy supplied by cell (電池提供的電能)",
+            "How difficult it is for electric charges to flow through the electrical conductor (電荷流經導體時所遇到的困難程度)",
+            "Flow of charges from positive to negative (電荷從正極流向負極的流動)",
+            "Charges eaten by bulb (被燈泡吃掉的電荷)"
+          ],
+          ans: 1,
+          exp: "Correct! (完全正確！) Resistance is how difficult it is for electric charges to flow through the conductor."
+        },
+        {
+          q: "2. In the SF analogy, what does the muddy road represent? (順豐比喻中泥濘路段代表甚麼？)",
+          opts: [
+            "Current (電流)",
+            "Voltage (電壓)",
+            "Resistance (電阻)",
+            "Ammeter (安培計)"
+          ],
+          ans: 2,
+          exp: "Correct! (答得好！) How difficult the delivery man walks through the road represents Resistance (電阻)."
+        },
+        {
+          q: "3. Why is it wrong to say charges are 'eaten up' by the bulb? (為何說電荷被燈泡吃掉是錯誤的？)",
+          opts: [
+            "Charges are never consumed; only their electrical energy is converted (電荷永不被消耗，只有電能被轉化)",
+            "Charges multiply inside the bulb (電荷在燈泡內增加)",
+            "Charges stay in the battery (電荷停在電池)",
+            "The bulb creates new charges (燈泡產生電荷)"
+          ],
+          ans: 0,
+          exp: "Excellent! (優秀！) Couriers / charges are never eaten. Current in equals current out!"
+        },
+        {
+          q: "4. How should a Voltmeter (Claw Machine) connect? (伏特計夾公仔機應如何接駁？)",
+          opts: [
+            "Break the wire in series (切斷電線串聯)",
+            "Keep circuit intact, clamp 2 leads across component in parallel (保持線路完整，以兩引線跨接兩端並聯)",
+            "Connect to cell positive only (只接正極)",
+            "No connection needed (無需連接)"
+          ],
+          ans: 1,
+          exp: "Spot on! (答對了！) Voltmeter branches two leads across junctions to measure energy difference without cutting the main wire."
+        }
+      ]
+    };
+
+    // DOM references
+    let canvasSF, ctxSF;
+    let canvasCircuit, ctxCircuit;
+    let animId = null;
+
+    function reportError(msg) {
+      console.warn("[ScienceApplet]", msg);
+      const b = document.getElementById('errorBanner');
+      if (b) {
+        b.textContent = `Notice: ${msg}`;
+        b.classList.remove('hidden');
+      }
+    }
+
+    // --- Language Switcher Handler ---
+    function setLanguage(lang) {
+      State.lang = lang;
+      AudioEngine.click();
+
+      ['zh', 'bi', 'en'].forEach(l => {
+        const btn = document.getElementById('lang' + l.charAt(0).toUpperCase() + l.slice(1));
+        if (btn) {
+          btn.classList.toggle('active', l === lang);
+          btn.classList.toggle('text-slate-300', l !== lang);
+        }
+      });
+
+      const dict = I18N[lang] || I18N.bi;
+
+      // Update Header Text
+      const appTitle = document.getElementById('appTitle');
+      const appSubtitle = document.getElementById('appSubtitle');
+      if (appTitle) {
+        appTitle.innerHTML = `${dict.appTitle} <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">HK S1–S3 Science</span>`;
+      }
+      if (appSubtitle) appSubtitle.textContent = dict.appSubtitle;
+
+      // Update Navigation Tabs
+      const elSim = document.querySelector('[data-i18n="navSimulation"]');
+      const elMet = document.querySelector('[data-i18n="navMeters"]');
+      const elCon = document.querySelector('[data-i18n="navConcepts"]');
+      const elQz = document.querySelector('[data-i18n="navQuiz"]');
+      if (elSim) elSim.textContent = dict.navSimulation;
+      if (elMet) elMet.textContent = dict.navMeters;
+      if (elCon) elCon.textContent = dict.navConcepts;
+      if (elQz) elQz.textContent = dict.navQuiz;
+
+      // Update Controls Deck
+      const txtSimHelp = document.getElementById('txtSimHelp');
+      const playText = document.getElementById('playText');
+      const btnResetText = document.getElementById('btnResetText');
+      const lblVoltageHeader = document.getElementById('lblVoltageHeader');
+      const lblVoltageSubLeft = document.getElementById('lblVoltageSubLeft');
+      const lblVoltageSubRight = document.getElementById('lblVoltageSubRight');
+      const lblResistanceHeader = document.getElementById('lblResistanceHeader');
+      const lblResistanceSubLeft = document.getElementById('lblResistanceSubLeft');
+      const lblResistanceSubRight = document.getElementById('lblResistanceSubRight');
+      const lblCurrentHeader = document.getElementById('lblCurrentHeader');
+      const lblCurrentRule = document.getElementById('lblCurrentRule');
+      const lblMeterHint = document.getElementById('lblMeterHint');
+      const lblMeterLink = document.getElementById('lblMeterLink');
+
+      if (txtSimHelp) txtSimHelp.textContent = dict.simHelp;
+      if (playText) playText.textContent = State.isRunning ? (dict.pause) : (dict.play);
+      if (btnResetText) btnResetText.textContent = dict.reset;
+
+      if (lblVoltageHeader) lblVoltageHeader.innerHTML = dict.voltageHeader;
+      if (lblVoltageSubLeft) lblVoltageSubLeft.textContent = dict.voltageSubLeft;
+      if (lblVoltageSubRight) lblVoltageSubRight.textContent = dict.voltageSubRight;
+
+      if (lblResistanceHeader) lblResistanceHeader.innerHTML = dict.resistanceHeader;
+      if (lblResistanceSubLeft) lblResistanceSubLeft.textContent = dict.resistanceSubLeft;
+      if (lblResistanceSubRight) lblResistanceSubRight.textContent = dict.resistanceSubRight;
+
+      if (lblCurrentHeader) lblCurrentHeader.innerHTML = dict.currentHeader;
+      if (lblCurrentRule) lblCurrentRule.innerHTML = dict.currentRule;
+      if (lblMeterHint) lblMeterHint.textContent = dict.meterHint;
+      if (lblMeterLink) lblMeterLink.textContent = dict.meterLink;
+
+      // Update Simulation Headers & Legends
+      const titleSFWorld = document.getElementById('titleSFWorld');
+      const titleCircuitWorld = document.getElementById('titleCircuitWorld');
+      if (titleSFWorld) titleSFWorld.textContent = dict.sfWorldTitle;
+      if (titleCircuitWorld) titleCircuitWorld.textContent = dict.circuitWorldTitle;
+
+      const legendSF = document.getElementById('legendSF');
+      if (legendSF) {
+        legendSF.innerHTML = `
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.sfLegendHub}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.sfLegendCourier}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.sfLegendParcel}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.sfLegendMud}</span>
+        `;
+      }
+
+      const legendCircuit = document.getElementById('legendCircuit');
+      if (legendCircuit) {
+        legendCircuit.innerHTML = `
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.circuitLegendCell}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.circuitLegendCharge}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.circuitLegendHalo}</span>
+          <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">${dict.circuitLegendResistor}</span>
+        `;
+      }
+
+      const boxSFNote = document.getElementById('boxSFNote');
+      const boxCircuitNote = document.getElementById('boxCircuitNote');
+      if (boxSFNote) boxSFNote.innerHTML = dict.sfNote;
+      if (boxCircuitNote) boxCircuitNote.innerHTML = dict.circuitNote;
+
+      // Update Concepts Tab
+      const txtPropTitle = document.getElementById('txtPropTitle');
+      const txtPropSub = document.getElementById('txtPropSub');
+      const cardCurrentDef = document.getElementById('cardCurrentDef');
+      const cardCurrentAnalogy = document.getElementById('cardCurrentAnalogy');
+      const cardCurrentMeter = document.getElementById('cardCurrentMeter');
+      const cardVoltageDef = document.getElementById('cardVoltageDef');
+      const cardVoltageAnalogy = document.getElementById('cardVoltageAnalogy');
+      const cardVoltageMeter = document.getElementById('cardVoltageMeter');
+      const cardResistanceDef = document.getElementById('cardResistanceDef');
+      const cardResistanceAnalogy = document.getElementById('cardResistanceAnalogy');
+      const cardResistanceEffect = document.getElementById('cardResistanceEffect');
+      const lblRelationshipTitle = document.getElementById('lblRelationshipTitle');
+      const boxRelVoltage = document.getElementById('boxRelVoltage');
+      const boxRelResistance = document.getElementById('boxRelResistance');
+
+      if (txtPropTitle) txtPropTitle.textContent = dict.propTitle;
+      if (txtPropSub) txtPropSub.textContent = dict.propSub;
+      if (cardCurrentDef) cardCurrentDef.innerHTML = dict.cardCurrentDef;
+      if (cardCurrentAnalogy) cardCurrentAnalogy.innerHTML = dict.cardCurrentAnalogy;
+      if (cardCurrentMeter) cardCurrentMeter.innerHTML = dict.cardCurrentMeter;
+      if (cardVoltageDef) cardVoltageDef.innerHTML = dict.cardVoltageDef;
+      if (cardVoltageAnalogy) cardVoltageAnalogy.innerHTML = dict.cardVoltageAnalogy;
+      if (cardVoltageMeter) cardVoltageMeter.innerHTML = dict.cardVoltageMeter;
+      if (cardResistanceDef) cardResistanceDef.innerHTML = dict.cardResistanceDef;
+      if (cardResistanceAnalogy) cardResistanceAnalogy.innerHTML = dict.cardResistanceAnalogy;
+      if (cardResistanceEffect) cardResistanceEffect.innerHTML = dict.cardResistanceEffect;
+      if (lblRelationshipTitle) lblRelationshipTitle.textContent = dict.relationshipTitle;
+      if (boxRelVoltage) boxRelVoltage.innerHTML = dict.relVoltage;
+      if (boxRelResistance) boxRelResistance.innerHTML = dict.relResistance;
+
+      // Update Meters Tab
+      const txtMeterTabTitle = document.getElementById('txtMeterTabTitle');
+      const txtMeterTabSub = document.getElementById('txtMeterTabSub');
+      const txtAmmeterMeasure = document.getElementById('txtAmmeterMeasure');
+      const txtFishballHead = document.getElementById('txtFishballHead');
+      const txtFishballDesc = document.getElementById('txtFishballDesc');
+      const txtFishballWhy = document.getElementById('txtFishballWhy');
+      const txtFishballWhyDesc = document.getElementById('txtFishballWhyDesc');
+      const txtVoltmeterMeasure = document.getElementById('txtVoltmeterMeasure');
+      const txtClawHead = document.getElementById('txtClawHead');
+      const txtClawDesc = document.getElementById('txtClawDesc');
+      const txtClawWhy = document.getElementById('txtClawWhy');
+      const txtClawWhyDesc = document.getElementById('txtClawWhyDesc');
+
+      if (txtMeterTabTitle) txtMeterTabTitle.textContent = dict.meterTabTitle;
+      if (txtMeterTabSub) txtMeterTabSub.textContent = dict.meterTabSub;
+      if (txtAmmeterMeasure) txtAmmeterMeasure.innerHTML = dict.ammeterMeasure;
+      if (txtFishballHead) txtFishballHead.textContent = dict.fishballHead;
+      if (txtFishballDesc) txtFishballDesc.textContent = dict.fishballDesc;
+      if (txtFishballWhy) txtFishballWhy.textContent = dict.fishballWhy;
+      if (txtFishballWhyDesc) txtFishballWhyDesc.innerHTML = dict.fishballWhyDesc;
+      if (txtVoltmeterMeasure) txtVoltmeterMeasure.innerHTML = dict.voltmeterMeasure;
+      if (txtClawHead) txtClawHead.textContent = dict.clawHead;
+      if (txtClawDesc) txtClawDesc.textContent = dict.clawDesc;
+      if (txtClawWhy) txtClawWhy.textContent = dict.clawWhy;
+      if (txtClawWhyDesc) txtClawWhyDesc.innerHTML = dict.clawWhyDesc;
+
+      // Update Misconceptions & Quiz Tab
+      const txtMiscTitle = document.getElementById('txtMiscTitle');
+      const txtMiscSub = document.getElementById('txtMiscSub');
+      const txtQuizTitle = document.getElementById('txtQuizTitle');
+      const txtQuizSub = document.getElementById('txtQuizSub');
+      if (txtMiscTitle) txtMiscTitle.textContent = dict.miscTitle;
+      if (txtMiscSub) txtMiscSub.textContent = dict.miscSub;
+      if (txtQuizTitle) txtQuizTitle.textContent = dict.quizTitle;
+      if (txtQuizSub) txtQuizSub.textContent = dict.quizSub;
+
+      initQuiz();
+    }
+
+    // --- Tab Switching ---
+    function switchTab(tabId) {
+      AudioEngine.click();
+      const tabs = ['simulation', 'meters', 'concepts', 'quiz'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+        const el = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (btn) {
+          btn.classList.toggle('active', t === tabId);
+          btn.classList.toggle('text-slate-400', t !== tabId);
+        }
+        if (el) {
+          el.classList.toggle('hidden', t !== tabId);
+        }
+      });
+
+      if (tabId === 'simulation') {
+        resizeCanvases();
+      }
+    }
+
+    // --- Controls Handler ---
+    function onControlChange() {
+      try {
+        const vSlider = document.getElementById('sliderVoltage');
+        const rSlider = document.getElementById('sliderResistance');
+
+        if (vSlider) State.voltage = parseFloat(vSlider.value) || 1.5;
+        if (rSlider) State.resistance = parseFloat(rSlider.value) || 1.0;
+
+        if (State.resistance <= 0.1) State.resistance = 0.1;
+
+        const current = State.voltage / State.resistance;
+
+        const vText = document.getElementById('valVoltage');
+        const rText = document.getElementById('valResistance');
+        const iText = document.getElementById('valCurrent');
+
+        if (vText) vText.textContent = `${State.voltage.toFixed(1)} Volt (V)`;
+        if (rText) rText.textContent = `${State.resistance.toFixed(1)} Ohm (Ω)`;
+        if (iText) iText.textContent = `${current.toFixed(2)} Ampere (A)`;
+      } catch (e) {
+        reportError("Control update: " + e.message);
+      }
+    }
+
+    function togglePlayPause() {
+      AudioEngine.click();
+      State.isRunning = !State.isRunning;
+      const icon = document.getElementById('playIcon');
+      const txt = document.getElementById('playText');
+      const dict = I18N[State.lang] || I18N.bi;
+      if (icon) icon.textContent = State.isRunning ? '⏸' : '▶';
+      if (txt) txt.textContent = State.isRunning ? (dict.pause) : (dict.play);
+    }
+
+    function resetSliders() {
+      AudioEngine.click();
+      const vSlider = document.getElementById('sliderVoltage');
+      const rSlider = document.getElementById('sliderResistance');
+      if (vSlider) vSlider.value = "6";
+      if (rSlider) rSlider.value = "3";
+      onControlChange();
+    }
+
+    // --- Canvas Sizing & High-DPI Handling ---
+    function resizeCanvases() {
+      try {
+        const setup = (wrapId, canvas) => {
+          const wrap = document.getElementById(wrapId);
+          if (!wrap || !canvas) return;
+          const rect = wrap.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
+          const w = Math.max(300, Math.floor(rect.width));
+          const h = Math.max(220, Math.floor(rect.height));
+
+          if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+          }
+        };
+
+        setup('canvasWrapSF', canvasSF);
+        setup('canvasWrapCircuit', canvasCircuit);
+      } catch (err) {
+        reportError("Resize error: " + err.message);
+      }
+    }
+
+    function getTrackMetrics(w, h) {
+      const padX = Math.max(65, Math.min(105, w * 0.18));
+      const padY = Math.max(50, Math.min(75, h * 0.18));
+      const trackW = Math.max(120, w - padX * 2);
+      const trackH = Math.max(100, h - padY * 2);
+      const cornerR = Math.min(26, trackW * 0.15, trackH * 0.15);
+
+      const topLen = trackW - 2 * cornerR;
+      const rightLen = trackH - 2 * cornerR;
+      const botLen = trackW - 2 * cornerR;
+      const leftLen = trackH - 2 * cornerR;
+      const arcLen = (Math.PI * 0.5) * cornerR;
+
+      const totalLen = topLen + rightLen + botLen + leftLen + (4 * arcLen);
+
+      return { padX, padY, trackW, trackH, cornerR, topLen, rightLen, botLen, leftLen, arcLen, totalLen };
+    }
+
+    function getLoopPoint(t, w, h) {
+      const m = getTrackMetrics(w, h);
+      let dist = (t % 1) * m.totalLen;
+      if (dist < 0) dist += m.totalLen;
+
+      if (dist < m.topLen) {
+        return { x: m.padX + m.cornerR + dist, y: m.padY, seg: 'top' };
+      }
+      dist -= m.topLen;
+
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5) - (Math.PI * 0.5);
+        return {
+          x: m.padX + m.trackW - m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'tr'
+        };
+      }
+      dist -= m.arcLen;
+
+      if (dist < m.rightLen) {
+        return { x: m.padX + m.trackW, y: m.padY + m.cornerR + dist, seg: 'right' };
+      }
+      dist -= m.rightLen;
+
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5);
+        return {
+          x: m.padX + m.trackW - m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.trackH - m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'br'
+        };
+      }
+      dist -= m.arcLen;
+
+      if (dist < m.botLen) {
+        return { x: m.padX + m.trackW - m.cornerR - dist, y: m.padY + m.trackH, seg: 'bot' };
+      }
+      dist -= m.botLen;
+
+      if (dist < m.arcLen) {
+        const a = (dist / m.arcLen) * (Math.PI * 0.5) + (Math.PI * 0.5);
+        return {
+          x: m.padX + m.cornerR + Math.cos(a) * m.cornerR,
+          y: m.padY + m.trackH - m.cornerR + Math.sin(a) * m.cornerR,
+          seg: 'bl'
+        };
+      }
+      dist -= m.arcLen;
+
+      return { x: m.padX, y: m.padY + m.trackH - m.cornerR - dist, seg: 'left' };
+    }
+
+    function drawPill(ctx, text, x, y, bgColor, textColor, borderColor) {
+      ctx.save();
+      ctx.font = 'bold 11px Plus Jakarta Sans, "Noto Sans TC", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const tw = ctx.measureText(text).width;
+      const pw = tw + 14;
+      const ph = 21;
+
+      ctx.fillStyle = bgColor;
+      ctx.beginPath();
+      ctx.roundRect(x - pw / 2, y - ph / 2, pw, ph, 6);
+      ctx.fill();
+
+      if (borderColor) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = textColor;
+      ctx.fillText(text, x, y);
+      ctx.restore();
+    }
+
+    // --- SF Express Simulation Renderer ---
+    function renderSF(ctx, w, h, current) {
+      ctx.clearRect(0, 0, w, h);
+      const m = getTrackMetrics(w, h);
+
+      // Road track
+      ctx.save();
+      ctx.lineWidth = 26;
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.roundRect(m.padX, m.padY, m.trackW, m.trackH, m.cornerR);
+      ctx.stroke();
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#475569';
+      ctx.setLineDash([8, 8]);
+      ctx.stroke();
+      ctx.restore();
+
+      const hubX = m.padX;
+      const hubY = m.padY + m.trackH * 0.5;
+
+      const mudX1 = m.padX + m.trackW * 0.25;
+      const mudX2 = m.padX + m.trackW * 0.75;
+      const mudY = m.padY;
+
+      const houseX = m.padX + m.trackW;
+      const houseY = m.padY + m.trackH * 0.5;
+
+      // Muddy Road Section (Road Condition)
+      ctx.save();
+      ctx.fillStyle = 'rgba(120, 53, 15, 0.45)';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(mudX1, mudY - 14, mudX2 - mudX1, 28, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      const bumps = 6;
+      const bStep = (mudX2 - mudX1) / bumps;
+      for (let i = 1; i <= bumps; i++) {
+        ctx.fillStyle = '#b45309';
+        ctx.beginPath();
+        ctx.arc(mudX1 + i * bStep - bStep / 2, mudY + (i % 2 === 0 ? -4 : 4), 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // Label: Muddy Road (Road Condition)
+      const mudLabel = State.lang === 'zh'
+        ? `🚧 泥濘路段 (${State.resistance.toFixed(1)} Ω)`
+        : (State.lang === 'en'
+            ? `🚧 Muddy Road (${State.resistance.toFixed(1)} Ω)`
+            : `🚧 Muddy Road (泥濘路段: ${State.resistance.toFixed(1)} Ω)`);
+      drawPill(ctx, mudLabel, (mudX1 + mudX2) / 2, mudY - 26, '#451a03', '#fde68a', '#b45309');
+
+      // SF Warehouse Hub (Supplies energy packets)
+      ctx.save();
+      ctx.fillStyle = '#1e1b4b';
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(hubX - 22, hubY - 24, 44, 48, 8);
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '20px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏢', hubX, hubY);
+      ctx.restore();
+
+      const hubLabel = State.lang === 'zh'
+        ? `🏢 總站: 裝載包裹電能 (電壓 ${State.voltage.toFixed(1)} V)`
+        : (State.lang === 'en'
+            ? `🏢 SF Hub: Loads Mail (Voltage ${State.voltage.toFixed(1)} V)`
+            : `🏢 SF Hub: Loads Mail / 包裹 (電壓 ${State.voltage.toFixed(1)} V)`);
+      drawPill(ctx, hubLabel, hubX, hubY - 38, '#1e1b4b', '#fca5a5', '#ef4444');
+
+      // Customer House (Delivers energy)
+      ctx.save();
+      ctx.fillStyle = '#064e3b';
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(houseX - 22, houseY - 24, 44, 48, 8);
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '20px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏠', houseX, houseY);
+      ctx.restore();
+
+      const houseLabel = State.lang === 'zh'
+        ? '🏠 顧客住宅 (簽收交付包裹)'
+        : (State.lang === 'en'
+            ? '🏠 Customer House (Delivered)'
+            : '🏠 House (收貨 / 交付能量)');
+      drawPill(ctx, houseLabel, houseX, houseY - 38, '#064e3b', '#6ee7b7', '#10b981');
+
+      // Couriers carrying parcel stacks
+      const parcelCount = Math.max(1, Math.min(6, Math.round(State.voltage / 2)));
+      for (let i = 0; i < State.courierCount; i++) {
+        const t = (State.time * 0.06 * current + (i / State.courierCount)) % 1;
+        const pt = getLoopPoint(t, w, h);
+
+        const hasParcels = (pt.seg === 'left' && pt.y < hubY) || pt.seg === 'top' || pt.seg === 'tr' || (pt.seg === 'right' && pt.y < houseY);
+
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🏃', 0, 0);
+
+        if (hasParcels) {
+          ctx.fillStyle = '#f59e0b';
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 1;
+          for (let p = 0; p < parcelCount; p++) {
+            ctx.beginPath();
+            ctx.roundRect(7, -8 + p * 4.5, 6, 3.5, 1);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+
+        ctx.restore();
+      }
+    }
+
+    // --- Real Circuit Simulation Renderer (PURE LOOP - NO METERS) ---
+    function renderCircuit(ctx, w, h, current) {
+      ctx.clearRect(0, 0, w, h);
+      const m = getTrackMetrics(w, h);
+
+      const batX = m.padX;
+      const batY = m.padY + m.trackH * 0.5;
+
+      const rX1 = m.padX + m.trackW * 0.25;
+      const rX2 = m.padX + m.trackW * 0.75;
+      const rY = m.padY;
+
+      const bX = m.padX + m.trackW;
+      const bY = m.padY + m.trackH * 0.5;
+
+      // Pure Circuit Conducting Wires
+      ctx.save();
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Top Branch: Cell (+) -> Resistor -> Bulb
+      ctx.beginPath();
+      ctx.moveTo(batX, batY - 20);
+      ctx.lineTo(batX, m.padY + m.cornerR);
+      ctx.arcTo(batX, m.padY, batX + m.cornerR, m.padY, m.cornerR);
+      ctx.lineTo(rX1, rY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(rX2, rY);
+      ctx.lineTo(m.padX + m.trackW - m.cornerR, m.padY);
+      ctx.arcTo(m.padX + m.trackW, m.padY, m.padX + m.trackW, m.padY + m.cornerR, m.cornerR);
+      ctx.lineTo(bX, bY - 20);
+      ctx.stroke();
+
+      // Bottom Branch: Bulb -> Cell (-)
+      ctx.beginPath();
+      ctx.moveTo(bX, bY + 20);
+      ctx.lineTo(m.padX + m.trackW, m.padY + m.trackH - m.cornerR);
+      ctx.arcTo(m.padX + m.trackW, m.padY + m.trackH, m.padX + m.trackW - m.cornerR, m.padY + m.trackH, m.cornerR);
+      ctx.lineTo(m.padX + m.cornerR, m.padY + m.trackH);
+      ctx.arcTo(m.padX, m.padY + m.trackH, m.padX, m.padY + m.trackH - m.cornerR, m.cornerR);
+      ctx.lineTo(batX, batY + 20);
+      ctx.stroke();
+      ctx.restore();
+
+      // Cell Symbol (Long + plate, short thick - plate)
+      ctx.save();
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(batX - 18, batY - 10);
+      ctx.lineTo(batX + 18, batY - 10);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(batX - 10, batY + 10);
+      ctx.lineTo(batX + 10, batY + 10);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText('+', batX + 24, batY - 8);
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('−', batX + 24, batY + 14);
+      ctx.restore();
+
+      const batLabel = State.lang === 'zh'
+        ? `🔋 乾電池: 電壓 ${State.voltage.toFixed(1)} V`
+        : (State.lang === 'en'
+            ? `🔋 Cell: Voltage ${State.voltage.toFixed(1)} V`
+            : `🔋 Cell: Voltage (電壓) ${State.voltage.toFixed(1)} V`);
+      drawPill(ctx, batLabel, batX, batY - 38, '#451a03', '#fef08a', '#b45309');
+
+      // Resistor Component with Zigzag
+      ctx.save();
+      ctx.fillStyle = '#1e1b4b';
+      ctx.strokeStyle = '#818cf8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(rX1, rY - 12, rX2 - rX1, 24, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.strokeStyle = '#c7d2fe';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      const segs = 10;
+      const sW = (rX2 - rX1 - 16) / segs;
+      ctx.moveTo(rX1 + 8, rY);
+      for (let s = 1; s <= segs; s++) {
+        ctx.lineTo(rX1 + 8 + s * sW, rY + (s % 2 === 1 ? -5 : 5));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // Clean label: Resistor: Resistance
+      const rLabel = State.lang === 'zh'
+        ? `🛑 電阻器: 電阻 ${State.resistance.toFixed(1)} Ω`
+        : (State.lang === 'en'
+            ? `🛑 Resistor: Resistance ${State.resistance.toFixed(1)} Ω`
+            : `🛑 Resistor: Resistance (電阻: ${State.resistance.toFixed(1)} Ω)`);
+      drawPill(ctx, rLabel, (rX1 + rX2) / 2, rY - 26, '#1e1b4b', '#c7d2fe', '#6366f1');
+
+      // Light Bulb (⊗) with dynamic glow
+      const brightness = Math.min(1.0, (State.voltage * current) / 24);
+      ctx.save();
+
+      if (brightness > 0.05) {
+        const glowR = 14 + brightness * 35;
+        const grad = ctx.createRadialGradient(bX, bY, 4, bX, bY, glowR);
+        grad.addColorStop(0, `rgba(254, 240, 138, ${0.9 * brightness})`);
+        grad.addColorStop(0.5, `rgba(245, 158, 11, ${0.3 * brightness})`);
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(bX, bY, glowR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = '#0f172a';
+      ctx.strokeStyle = brightness > 0.1 ? '#facc15' : '#64748b';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(bX, bY, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.strokeStyle = brightness > 0.1 ? '#fef08a' : '#94a3b8';
+      ctx.lineWidth = 2;
+      const off = 11;
+      ctx.beginPath();
+      ctx.moveTo(bX - off, bY - off);
+      ctx.lineTo(bX + off, bY + off);
+      ctx.moveTo(bX - off, bY + off);
+      ctx.lineTo(bX + off, bY - off);
+      ctx.stroke();
+      ctx.restore();
+
+      const bLabel = State.lang === 'zh'
+        ? '💡 燈泡 (用電器具 ⊗)'
+        : (State.lang === 'en'
+            ? '💡 Light Bulb (Load ⊗)'
+            : '💡 Light Bulb (燈泡 ⊗)');
+      drawPill(ctx, bLabel, bX, bY - 38, '#451a03', '#fef08a', '#ca8a04');
+
+      // Positive Conventional Electric Charges (+q)
+      for (let i = 0; i < State.courierCount; i++) {
+        const t = (State.time * 0.06 * current + (i / State.courierCount)) % 1;
+        const pt = getLoopPoint(t, w, h);
+
+        const hasEnergy = (pt.seg === 'left' && pt.y < batY) || pt.seg === 'top' || pt.seg === 'tr' || (pt.seg === 'right' && pt.y < bY);
+
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+', 0, 1);
+
+        if (hasEnergy) {
+          ctx.strokeStyle = '#facc15';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, 0, 12, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    // --- Animation Master Loop ---
+    let lastTime = 0;
+    function masterAnimate(now) {
+      animId = requestAnimationFrame(masterAnimate);
+
+      if (!lastTime) lastTime = now;
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      if (State.isRunning) {
+        State.time += dt;
+      }
+
+      try {
+        const current = State.voltage / State.resistance;
+
+        if (canvasSF && ctxSF) {
+          const dpr = window.devicePixelRatio || 1;
+          const w = canvasSF.width / dpr;
+          const h = canvasSF.height / dpr;
+          ctxSF.save();
+          ctxSF.scale(dpr, dpr);
+          renderSF(ctxSF, w, h, current);
+          ctxSF.restore();
+        }
+
+        if (canvasCircuit && ctxCircuit) {
+          const dpr = window.devicePixelRatio || 1;
+          const w = canvasCircuit.width / dpr;
+          const h = canvasCircuit.height / dpr;
+          ctxCircuit.save();
+          ctxCircuit.scale(dpr, dpr);
+          renderCircuit(ctxCircuit, w, h, current);
+          ctxCircuit.restore();
+        }
+      } catch (err) {
+        reportError("Animation loop: " + err.message);
+      }
+    }
+
+    // --- Interactive Quiz Controller ---
+    function initQuiz() {
+      const container = document.getElementById('quizContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const questions = QuizData[State.lang] || QuizData.bi;
+
+      questions.forEach((item, qIdx) => {
+        const card = document.createElement('div');
+        card.className = 'p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'font-bold text-white text-xs';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'space-y-1.5';
+
+        item.opts.forEach((optText, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = `w-full text-left p-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs transition flex items-center justify-between`;
+          btn.id = `q_${qIdx}_opt_${oIdx}`;
+          btn.innerHTML = `<span>${optText}</span><span id="q_${qIdx}_icon_${oIdx}"></span>`;
+          btn.onclick = () => selectOption(qIdx, oIdx);
+          optsDiv.appendChild(btn);
+        });
+
+        const feedback = document.createElement('div');
+        feedback.id = `q_${qIdx}_fb`;
+        feedback.className = 'hidden p-2 rounded-xl text-[11px] font-medium';
+        card.appendChild(optsDiv);
+        card.appendChild(feedback);
+
+        container.appendChild(card);
+      });
+
+      const scoreBox = document.getElementById('quizScoreBox');
+      if (scoreBox) scoreBox.classList.add('hidden');
+    }
+
+    function selectOption(qIdx, oIdx) {
+      AudioEngine.click();
+      const questions = QuizData[State.lang] || QuizData.bi;
+      const q = questions[qIdx];
+      const fb = document.getElementById(`q_${qIdx}_fb`);
+
+      q.opts.forEach((_, idx) => {
+        const b = document.getElementById(`q_${qIdx}_opt_${idx}`);
+        const ic = document.getElementById(`q_${qIdx}_icon_${idx}`);
+        if (!b) return;
+
+        b.classList.remove('border-emerald-500', 'bg-emerald-950/40', 'border-rose-500', 'bg-rose-950/40');
+        if (idx === q.ans) {
+          b.classList.add('border-emerald-500', 'bg-emerald-950/30', 'text-emerald-300');
+          if (ic) ic.textContent = '✓';
+        } else if (idx === oIdx && oIdx !== q.ans) {
+          b.classList.add('border-rose-500', 'bg-rose-950/30', 'text-rose-300');
+          if (ic) ic.textContent = '✗';
+        }
+      });
+
+      if (fb) {
+        fb.classList.remove('hidden');
+        if (oIdx === q.ans) {
+          AudioEngine.correct();
+          fb.className = 'p-2 rounded-xl text-[11px] font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-500/30';
+          fb.textContent = q.exp;
+        } else {
+          fb.className = 'p-2 rounded-xl text-[11px] font-medium bg-rose-950/60 text-rose-300 border border-rose-500/30';
+          fb.textContent = State.lang === 'zh'
+            ? '再想一想！請複習上方的模擬動畫與比喻。'
+            : (State.lang === 'en'
+                ? 'Not quite. Review the simulation and try again!'
+                : 'Try again! 再想一想，請複習模擬動畫與比喻。');
+        }
+      }
+    }
+
+    // --- Keyboard Hotkeys & App Initialization ---
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlayPause();
+      } else if (e.code === 'KeyR') {
+        resetSliders();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        canvasSF = document.getElementById('canvasSF');
+        canvasCircuit = document.getElementById('canvasCircuit');
+
+        if (canvasSF) ctxSF = canvasSF.getContext('2d');
+        if (canvasCircuit) ctxCircuit = canvasCircuit.getContext('2d');
+
+        resizeCanvases();
+        window.addEventListener('resize', resizeCanvases);
+
+        // Initialize bilingual state
+        setLanguage('bi');
+
+        onControlChange();
+        requestAnimationFrame(masterAnimate);
+      } catch (err) {
+        reportError("Initialization: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
